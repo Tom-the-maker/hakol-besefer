@@ -1600,43 +1600,25 @@ const DevDashboard: React.FC = () => {
         const sessionAssetMap: Record<string, SessionFlow['bookAssets']> = {};
         const sessionAnalyticsMap: Record<string, SessionFlow['analyticsEvents']> = {};
 
-        if (!supabase || baseSessionIds.length === 0) {
+        if (baseSessionIds.length === 0) {
             return { sessionAssetMap, sessionAnalyticsMap };
         }
 
         if (includeAnalytics) {
-            const analyticsData: Array<{
-                session_id: string | null;
-                event_name: string | null;
-                event_data: unknown;
-                page: string | null;
-                device_type: string | null;
-                created_at: string | null;
-            }> = [];
-            let analyticsError: { message: string } | null = null;
-            const analyticsPageSize = 1000;
-            const analyticsMaxRows = 20000;
+            const analyticsResponse = await fetch('/api/analytics-events', {
+                method: 'POST',
+                headers: await getApiHeaders(),
+                body: JSON.stringify({
+                    session_ids: baseSessionIds,
+                }),
+            }).catch(() => null);
 
-            for (let offset = 0; offset < analyticsMaxRows; offset += analyticsPageSize) {
-                const { data: analyticsPage, error: analyticsPageError } = await supabase
-                    .from('analytics_events')
-                    .select('session_id, event_name, event_data, page, device_type, created_at')
-                    .in('session_id', baseSessionIds)
-                    .order('created_at', { ascending: true })
-                    .range(offset, offset + analyticsPageSize - 1);
+            const analyticsPayload = analyticsResponse && analyticsResponse.ok
+                ? await analyticsResponse.json().catch(() => null)
+                : null;
+            const analyticsData = Array.isArray(analyticsPayload?.events) ? analyticsPayload.events : [];
 
-                if (analyticsPageError) {
-                    analyticsError = analyticsPageError;
-                    break;
-                }
-
-                if (!analyticsPage?.length) break;
-                analyticsData.push(...analyticsPage);
-
-                if (analyticsPage.length < analyticsPageSize) break;
-            }
-
-            if (!analyticsError && analyticsData.length > 0) {
+            if (analyticsData.length > 0) {
                 for (const event of analyticsData) {
                     const sid = typeof event.session_id === 'string' ? event.session_id : '';
                     if (!sid) continue;
@@ -1943,29 +1925,22 @@ const DevDashboard: React.FC = () => {
         setRefreshingSessionId(session.session_id);
         setError(null);
 
-        if (!supabase) {
-            setError('Supabase לא מוגדר');
-            setRefreshingSessionId(null);
-            return;
-        }
-
         try {
             const baseSessionId = getBaseSessionId(session.session_id);
             if (!baseSessionId || baseSessionId.startsWith('book:')) {
                 return;
             }
-            const { data, error: fetchError } = await supabase
-                .from('system_logs')
-                .select(SYSTEM_LOG_COLUMNS)
-                .eq('session_id', baseSessionId)
-                .order('created_at', { ascending: false })
-                .limit(1000);
+            const response = await fetch(`/api/system-logs?sessionId=${encodeURIComponent(baseSessionId)}`, {
+                headers: await getApiHeaders(),
+            });
 
-            if (fetchError) {
-                throw fetchError;
+            if (!response.ok) {
+                const payload = await response.json().catch(() => null);
+                throw new Error(typeof payload?.error === 'string' ? payload.error : 'שגיאה ברענון סשן');
             }
 
-            const refreshedFlows = await buildFlowsFromLogs(data || [], { includeAnalytics: true });
+            const payload = await response.json().catch(() => null);
+            const refreshedFlows = await buildFlowsFromLogs(Array.isArray(payload?.logs) ? payload.logs : [], { includeAnalytics: true });
             if (refreshedFlows.length === 0) return;
 
             const detailedSessions = replaceSessionsByBaseSessionId(sessions, refreshedFlows);

@@ -54,7 +54,8 @@ interface UploadedAsset {
   url: string;
 }
 
-const BOOK_IMAGE_BUCKET = 'book-images';
+const BOOK_PUBLIC_BUCKET = import.meta.env.VITE_BOOK_PUBLIC_BUCKET || 'book-public-assets';
+const BOOK_PRIVATE_BUCKET = import.meta.env.VITE_BOOK_PRIVATE_BUCKET || 'book-private-assets';
 const ASSET_CACHE_SECONDS = '31536000';
 const MAX_OWNED_BOOKS = 500;
 
@@ -182,7 +183,7 @@ function getPublicAssetUrl(path: string | undefined): string | undefined {
   if (!supabase || !path) return undefined;
   const trimmedPath = path.trim();
   if (!trimmedPath) return undefined;
-  const { data } = supabase.storage.from(BOOK_IMAGE_BUCKET).getPublicUrl(trimmedPath);
+  const { data } = supabase.storage.from(BOOK_PUBLIC_BUCKET).getPublicUrl(trimmedPath);
   return typeof data?.publicUrl === 'string' && data.publicUrl.trim().length > 0 ? data.publicUrl : undefined;
 }
 
@@ -426,6 +427,8 @@ async function uploadBookAsset(
   mimeType: string,
   bookSlug: string,
   accessToken: string | undefined,
+  bucketName: string,
+  folder: string,
   prefix: string
 ): Promise<UploadedAsset | null> {
   if (!supabase || !blob || !mimeType || !bookSlug) return null;
@@ -435,10 +438,10 @@ async function uploadBookAsset(
     const tokenFragment = (accessToken || generateAccessToken())
       .replace(/[^a-zA-Z0-9]/g, '')
       .slice(0, 24);
-    const filePath = `${bookSlug}/${prefix}-${tokenFragment || Date.now().toString(36)}.${ext}`;
+    const filePath = `${bookSlug}/${folder}/${prefix}-${tokenFragment || Date.now().toString(36)}.${ext}`;
 
     const { error } = await supabase.storage
-      .from(BOOK_IMAGE_BUCKET)
+      .from(bucketName)
       .upload(filePath, blob, {
         contentType: mimeType,
         cacheControl: ASSET_CACHE_SECONDS,
@@ -450,15 +453,11 @@ async function uploadBookAsset(
       return null;
     }
 
-    const { data: urlData } = supabase.storage
-      .from(BOOK_IMAGE_BUCKET)
-      .getPublicUrl(filePath);
-
-    if (!urlData?.publicUrl) return null;
-
     return {
       path: filePath,
-      url: urlData.publicUrl,
+      url: bucketName === BOOK_PUBLIC_BUCKET
+        ? (supabase.storage.from(bucketName).getPublicUrl(filePath).data.publicUrl || '')
+        : '',
     };
   } catch (err) {
     console.error(`Error uploading asset ${prefix}:`, err);
@@ -473,13 +472,10 @@ export async function removeBookStorageAssets(paths: string[]): Promise<void> {
   if (uniquePaths.length === 0) return;
 
   try {
-    const { error } = await supabase.storage
-      .from(BOOK_IMAGE_BUCKET)
-      .remove(uniquePaths);
-
-    if (error) {
-      console.warn('Failed to clean up uploaded book assets after save failure:', error);
-    }
+    await Promise.all([
+      supabase.storage.from(BOOK_PUBLIC_BUCKET).remove(uniquePaths).catch(() => ({ error: null })),
+      supabase.storage.from(BOOK_PRIVATE_BUCKET).remove(uniquePaths).catch(() => ({ error: null })),
+    ]);
   } catch (err) {
     console.warn('Book asset cleanup error:', err);
   }
@@ -500,6 +496,8 @@ async function uploadBookImages(
     loadedImage.mimeType,
     bookSlug,
     accessToken,
+    BOOK_PRIVATE_BUCKET,
+    'source',
     'scene-source'
   );
 
@@ -511,7 +509,7 @@ async function uploadBookImages(
     && previewBlob.size < loadedImage.blob.size
   );
   const displayAsset = shouldUploadDisplayPreview
-    ? await uploadBookAsset(previewBlob!, 'image/jpeg', bookSlug, accessToken, 'scene-display')
+    ? await uploadBookAsset(previewBlob!, 'image/jpeg', bookSlug, accessToken, BOOK_PUBLIC_BUCKET, 'display', 'scene-display')
     : null;
   const cardThumbSource = previewBlob || loadedImage.blob;
   const thumbBlob = await createCardThumbnailBlob(cardThumbSource);
@@ -523,7 +521,7 @@ async function uploadBookImages(
     && thumbBlob.size < comparisonBlob.size
   );
   const thumbAsset = shouldUploadThumb
-    ? await uploadBookAsset(thumbBlob!, 'image/jpeg', bookSlug, accessToken, 'scene-thumb')
+    ? await uploadBookAsset(thumbBlob!, 'image/jpeg', bookSlug, accessToken, BOOK_PUBLIC_BUCKET, 'thumb', 'scene-thumb')
     : null;
 
   return {
@@ -549,7 +547,7 @@ export async function uploadBookPdf(
 
   try {
     const { error } = await supabase.storage
-      .from(BOOK_IMAGE_BUCKET)
+      .from(BOOK_PRIVATE_BUCKET)
       .upload(filePath, pdfBlob, {
         contentType: 'application/pdf',
         cacheControl: ASSET_CACHE_SECONDS,
@@ -560,13 +558,7 @@ export async function uploadBookPdf(
       console.error('Failed to upload book PDF:', error);
       return null;
     }
-
-    const { data: urlData } = supabase.storage
-      .from(BOOK_IMAGE_BUCKET)
-      .getPublicUrl(filePath);
-
-    if (!urlData?.publicUrl) return null;
-    return { path: filePath, url: urlData.publicUrl };
+    return { path: filePath, url: '' };
   } catch (err) {
     console.error('Error uploading book PDF:', err);
     return null;
@@ -617,40 +609,6 @@ export async function saveBook(
   const slug = generateSlug();
   const accessToken = generateAccessToken();
 
-  let sourceImageUrl = getAssetValue(story.source_image_url) || story.composite_image_url;
-  let displayImageUrl = getAssetValue(story.display_image_url) || story.composite_image_url;
-  let sourceImagePath: string | undefined;
-  let displayImagePath: string | undefined;
-  let thumbImagePath: string | undefined;
-  const uploadedAssetPaths: string[] = [];
-
-  if (story.composite_image_url) {
-    const uploadedImages = await uploadBookImages(story.composite_image_url, slug, accessToken);
-    if (uploadedImages?.source?.url) {
-      sourceImageUrl = uploadedImages.source.url;
-      sourceImagePath = uploadedImages.source.path;
-      uploadedAssetPaths.push(uploadedImages.source.path);
-    }
-    if (uploadedImages?.display?.url) {
-      displayImageUrl = uploadedImages.display.url;
-      displayImagePath = uploadedImages.display.path;
-      uploadedAssetPaths.push(uploadedImages.display.path);
-    } else if (uploadedImages?.source?.url) {
-      displayImageUrl = uploadedImages.source.url;
-      displayImagePath = uploadedImages.source.path;
-    }
-    if (uploadedImages?.thumb?.path) {
-      thumbImagePath = uploadedImages.thumb.path;
-      uploadedAssetPaths.push(uploadedImages.thumb.path);
-    }
-  }
-
-  if (!sourceImagePath && isEphemeralAssetSource(sourceImageUrl)) {
-    console.warn('Skipping book save because source image was not persisted to storage');
-    await removeBookStorageAssets(uploadedAssetPaths);
-    return null;
-  }
-
   const compactArtifacts = compactGenerationArtifacts(options?.generationArtifacts);
   const currentMetadata = normalizeObject(
     compactArtifacts
@@ -660,9 +618,6 @@ export async function saveBook(
   const currentAssets = normalizeObject(currentMetadata.assets);
   const nextAssets = {
     ...currentAssets,
-    ...(sourceImagePath ? { source_image_path: sourceImagePath } : {}),
-    ...(displayImagePath ? { display_image_path: displayImagePath } : {}),
-    ...(thumbImagePath ? { thumb_image_path: thumbImagePath } : {}),
   };
   const metadata = {
     ...currentMetadata,
@@ -676,7 +631,7 @@ export async function saveBook(
     title: story.title,
     hero_name: story.heroName,
     segments: story.segments,
-    composite_image_url: sourceImageUrl,
+    composite_image_url: getAssetValue(story.source_image_url) || story.composite_image_url,
     is_unlocked: story.is_unlocked || false,
     payment_status: 'pending' as const,
     child_name: inputs.childName,
@@ -693,10 +648,6 @@ export async function saveBook(
   if (apiBook) {
     saveBookOwnership(slug, accessToken);
     return apiBook;
-  }
-
-  if (apiBook === null) {
-    await removeBookStorageAssets(uploadedAssetPaths);
   }
 
   return null;
@@ -777,13 +728,10 @@ export function resolveBookCardImageUrl(book: BookRecord): string {
   const metadata = normalizeObject(book.metadata);
   const assets = normalizeObject(metadata.assets);
   const thumbImagePath = getAssetValue(assets.thumb_image_path);
-  const displayImagePath = getAssetValue(assets.display_image_path);
 
   return (
     getPublicAssetUrl(thumbImagePath) ||
     getAssetValue(assets.thumb_image_url) ||
-    getPublicAssetUrl(displayImagePath) ||
-    getAssetValue(assets.display_image_url) ||
     ''
   );
 }

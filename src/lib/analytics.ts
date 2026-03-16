@@ -1,5 +1,5 @@
 // Lightweight analytics service - tracks funnel events + deep journey telemetry to Supabase + GA + Pixel
-import { supabase, isSupabaseConfigured } from './supabaseClient';
+import { supabase } from './supabaseClient';
 import { getCurrentSessionId } from './sessionManager';
 import { siteConfig } from './siteConfig';
 import { hasAnalyticsConsent, hasMarketingConsent } from '../components/CookieConsent';
@@ -42,6 +42,22 @@ const deviceType = (): string => window.innerWidth < 768 ? 'mobile' : 'desktop';
 
 let lastEvent = { signature: '', time: 0 };
 let uiTelemetryCleanup: (() => void) | null = null;
+
+async function getAnalyticsHeaders(): Promise<Record<string, string>> {
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+  if (!supabase) return headers;
+
+  try {
+    const { data } = await supabase.auth.getSession();
+    if (data.session?.access_token) {
+      headers.Authorization = `Bearer ${data.session.access_token}`;
+    }
+  } catch {
+    // Ignore auth lookup failures and continue without Authorization.
+  }
+
+  return headers;
+}
 
 function truncateString(value: string, maxLength = 240): string {
   if (value.length <= maxLength) return value;
@@ -105,19 +121,28 @@ export function trackEvent(
   forwardToGA(eventName, sanitizedEventData);
   forwardToPixel(eventName, sanitizedEventData);
 
-  if (!isSupabaseConfigured() || !supabase) return;
+  void (async () => {
+    try {
+      const response = await fetch('/api/analytics-event', {
+        method: 'POST',
+        headers: await getAnalyticsHeaders(),
+        body: JSON.stringify({
+          session_id: getCurrentSessionId(),
+          book_slug: typeof sanitizedEventData.bookSlug === 'string' ? sanitizedEventData.bookSlug : null,
+          event_name: eventName,
+          event_data: sanitizedEventData,
+          page: pagePath,
+          device_type: deviceType(),
+        }),
+      });
 
-  supabase.from('analytics_events').insert({
-    session_id: getCurrentSessionId(),
-    event_name: eventName,
-    event_data: sanitizedEventData,
-    page: pagePath,
-    referrer: document.referrer || null,
-    user_agent: navigator.userAgent,
-    device_type: deviceType()
-  }).then(({ error }) => {
-    if (error) console.warn('Analytics error:', error.message);
-  });
+      if (!response.ok) {
+        console.warn('Analytics error:', response.status);
+      }
+    } catch (error) {
+      console.warn('Analytics request error:', error);
+    }
+  })();
 }
 
 // Track page view automatically

@@ -29,6 +29,22 @@ if (isSupabaseConfigured()) {
 
 export { supabase };
 
+async function getServerApiHeaders(): Promise<Record<string, string>> {
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (!supabase) return headers;
+
+    try {
+        const { data } = await supabase.auth.getSession();
+        if (data.session?.access_token) {
+            headers.Authorization = `Bearer ${data.session.access_token}`;
+        }
+    } catch {
+        // Ignore auth lookup failures and continue without Authorization.
+    }
+
+    return headers;
+}
+
 // Type definition matching the existing system_logs table
 export interface SystemLog {
     id?: number;
@@ -192,99 +208,69 @@ export async function logActivity(log: SystemLog): Promise<boolean> {
     // Always log to console for dev visibility
     // console.debug(`📊 [${log.action_type}] ${log.model_name} - In: ${log.input_tokens}, Out: ${log.output_tokens} - $${log.metadata.estimated_cost?.toFixed(4)}`);
 
-    if (!supabase) {
-        // console.debug('📝 [Local only] Activity logged');
-        return false;
-    }
-
     try {
-        const { error } = await supabase
-            .from('system_logs')
-            .insert({
-                session_id: log.session_id,
-                user_id: log.user_id || null,
-                action_type: log.action_type,
-                model_name: log.model_name,
-                input_tokens: log.input_tokens,
-                output_tokens: log.output_tokens,
-                status: log.status,
-                metadata: log.metadata,
-                // Add new columns
-                child_name: log.child_name,
-                topic: log.topic,
-                art_style: log.art_style,
-                hero_gender: log.hero_gender,
-                hero_age: log.hero_age,
-                book_title: log.book_title,
-                extra_char_1: log.extra_char_1,
-                extra_char_2: log.extra_char_2
-            });
+        const response = await fetch('/api/system-log', {
+            method: 'POST',
+            headers: await getServerApiHeaders(),
+            body: JSON.stringify(log),
+        });
 
-        if (error) {
-            console.error('❌ Failed to log to Supabase:', error);
+        if (!response.ok) {
+            console.error('❌ Failed to log to server:', response.status);
             return false;
         }
 
-        // console.debug('✅ Logged to Supabase');
         return true;
     } catch (err) {
-        console.error('❌ Supabase error:', err);
+        console.error('❌ System log request error:', err);
         return false;
     }
 }
 
 // Get session logs from Supabase
 export async function getSessionLogs(sessionId: string): Promise<SystemLog[]> {
-    if (!supabase) return [];
-
     try {
-        const { data, error } = await supabase
-            .from('system_logs')
-            .select(SYSTEM_LOG_COLUMNS)
-            .eq('session_id', sessionId)
-            .order('created_at', { ascending: true });
+        const response = await fetch(`/api/system-logs?sessionId=${encodeURIComponent(sessionId)}`, {
+            headers: await getServerApiHeaders(),
+        });
 
-        if (error) {
-            console.error('❌ Failed to get session logs:', error);
+        if (!response.ok) {
+            console.error('❌ Failed to get session logs:', response.status);
             return [];
         }
 
-        return data || [];
+        const payload = await response.json().catch(() => null);
+        return Array.isArray(payload?.logs) ? payload.logs : [];
     } catch (err) {
-        console.error('❌ Supabase error:', err);
+        console.error('❌ System log fetch error:', err);
         return [];
     }
 }
 
 // Get total stats from all sessions (recalculates costs using current pricing)
 export async function getTotalStats(): Promise<{ totalSessions: number; totalCost: number; totalCalls: number } | null> {
-    if (!supabase) return null;
-
     try {
-        const { data, error } = await supabase
-            .from('system_logs')
-            .select('session_id, model_name, input_tokens, output_tokens');
+        const response = await fetch('/api/system-logs-stats', {
+            headers: await getServerApiHeaders(),
+        });
 
-        if (error) {
-            console.error('❌ Failed to get stats:', error);
+        if (!response.ok) {
+            console.error('❌ Failed to get stats:', response.status);
             return null;
         }
 
-        const uniqueSessions = new Set(data?.map(row => row.session_id) || []);
-
-        // Recalculate costs using current MODEL_PRICING
-        const totalCost = data?.reduce((sum, row) => {
-            const isImage = isImageModelName(row.model_name || '');
-            return sum + calculateCost(row.model_name || '', row.input_tokens || 0, row.output_tokens || 0, isImage);
-        }, 0) || 0;
+        const payload = await response.json().catch(() => null);
+        if (!payload || typeof payload !== 'object') {
+            return null;
+        }
 
         return {
-            totalSessions: uniqueSessions.size,
-            totalCost,
-            totalCalls: data?.length || 0
+            totalSessions: Number((payload as any).totalSessions) || 0,
+            totalCost: Number((payload as any).totalCost) || 0,
+            totalCalls: Number((payload as any).totalCalls) || 0,
         };
     } catch (err) {
-        console.error('❌ Supabase error:', err);
+        console.error('❌ System log stats error:', err);
         return null;
     }
 }

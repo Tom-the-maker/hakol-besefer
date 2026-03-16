@@ -245,16 +245,20 @@ async function handleDelete(req, res, supabase) {
     return sendError(res, 500, 'Failed to delete book record', deleteError.message);
   }
 
-  await supabase.from('analytics_events').insert({
-    session_id: data.session_id,
-    book_slug: data.slug,
-    event_name: 'book_deleted',
-    page: '/api/books',
-    device_type: 'server',
-    event_data: {
-      deletedBy: authUser ? 'auth-user' : 'access-token',
-    },
-  }).catch(() => {});
+  try {
+    await supabase.from('analytics_events').insert({
+      session_id: data.session_id,
+      book_slug: data.slug,
+      event_name: 'book_deleted',
+      page: '/api/books',
+      device_type: 'server',
+      event_data: {
+        deletedBy: authUser ? 'auth-user' : 'access-token',
+      },
+    });
+  } catch {
+    // Ignore telemetry failures on deletion.
+  }
 
   return sendJson(res, 200, {
     success: true,

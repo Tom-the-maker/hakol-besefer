@@ -20,8 +20,32 @@
       "destination": "/api/router?endpoint=health"
     },
     {
+      "source": "/api/ai",
+      "destination": "/api/router?endpoint=ai"
+    },
+    {
+      "source": "/api/analytics-event",
+      "destination": "/api/router?endpoint=analytics-event"
+    },
+    {
+      "source": "/api/analytics-events",
+      "destination": "/api/router?endpoint=analytics-events"
+    },
+    {
       "source": "/api/books",
       "destination": "/api/router?endpoint=books"
+    },
+    {
+      "source": "/api/book",
+      "destination": "/api/router?endpoint=book"
+    },
+    {
+      "source": "/api/checkout",
+      "destination": "/api/router?endpoint=checkout"
+    },
+    {
+      "source": "/api/coupon",
+      "destination": "/api/router?endpoint=coupon"
     },
     {
       "source": "/api/dashboard-books",
@@ -30,6 +54,34 @@
     {
       "source": "/api/dashboard-session",
       "destination": "/api/router?endpoint=dashboard-session"
+    },
+    {
+      "source": "/api/delete-book",
+      "destination": "/api/router?endpoint=delete-book"
+    },
+    {
+      "source": "/api/payment-status",
+      "destination": "/api/router?endpoint=payment-status"
+    },
+    {
+      "source": "/api/send-ready-email",
+      "destination": "/api/router?endpoint=send-ready-email"
+    },
+    {
+      "source": "/api/support-chat",
+      "destination": "/api/router?endpoint=support-chat"
+    },
+    {
+      "source": "/api/system-log",
+      "destination": "/api/router?endpoint=system-log"
+    },
+    {
+      "source": "/api/system-logs",
+      "destination": "/api/router?endpoint=system-logs"
+    },
+    {
+      "source": "/api/system-logs-stats",
+      "destination": "/api/router?endpoint=system-logs-stats"
     },
     {
       "source": "/api/router",
@@ -46,4 +98,3 @@
     }
   }
 }
-
