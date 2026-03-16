@@ -9,7 +9,10 @@ import couponHandler from '../server/routes/coupon.js';
 import dashboardBooksHandler from '../server/routes/dashboard-books.js';
 import dashboardSessionHandler from '../server/routes/dashboard-session.js';
 import deleteBookHandler from '../server/routes/delete-book.js';
+import paymentHostedStubHandler from '../server/routes/payment-hosted-stub.js';
+import paymentReturnHandler from '../server/routes/payment-return.js';
 import paymentStatusHandler from '../server/routes/payment-status.js';
+import paymentWebhookHandler from '../server/routes/payment-webhook.js';
 import sendReadyEmailHandler from '../server/routes/send-ready-email.js';
 import supportChatHandler from '../server/routes/support-chat.js';
 import systemLogHandler from '../server/routes/system-log.js';
@@ -28,7 +31,10 @@ const HANDLERS = {
   'dashboard-books': dashboardBooksHandler,
   'dashboard-session': dashboardSessionHandler,
   'delete-book': deleteBookHandler,
+  'payment-hosted-stub': paymentHostedStubHandler,
+  'payment-return': paymentReturnHandler,
   'payment-status': paymentStatusHandler,
+  'payment-webhook': paymentWebhookHandler,
   'send-ready-email': sendReadyEmailHandler,
   'support-chat': supportChatHandler,
   'system-log': systemLogHandler,

@@ -32,10 +32,23 @@ npm run lab:reset
 ## בקרת שימוש
 
 - כברירת מחדל, `localhost` לא כותב `analytics_events` לסופבייס. אם צריך בדיקת טלמטריה מכוונת, מדליקים רק זמנית עם `VITE_ENABLE_LOCAL_ANALYTICS=1`.
-- `npm run telemetry:report` מציג ספירות של `books`, `system_logs`, `analytics_events`, וגם מצב `Storage` בשני ה־buckets.
-- `npm run lab:reset` מיועד ל־`lab` בלבד. בלי `--apply` הוא מציג dry-run; עם `--apply` הוא מוחק ספרי בדיקה, לוגים, אנליטיקה ונכסי Storage מהמעבדה בלבד.
+- `npm run telemetry:report` מציג ספירות של `books`, `system_logs`, `analytics_events`, וגם מצב `Storage` בשני ה־buckets. הוא טוען אוטומטית את `.env.local`.
+- `npm run lab:reset` מיועד ל־`lab` בלבד. בלי `--apply` הוא מציג dry-run; עם `--apply` הוא מוחק ספרי בדיקה, לוגים, אנליטיקה ונכסי Storage מהמעבדה בלבד. גם הוא טוען אוטומטית את `.env.local`.
 - מאחר ש־`lab` ו־`prod` יושבים על אותו ארגון בסופבייס, צריך לעקוב אחרי usage ברמת הארגון, לא רק ברמת הפרויקט.
 - כדי לראות זאת בדשבורד של סופבייס: נכנסים לארגון, ואז `Usage`. כדי לראות מה יושב בכל פרויקט, נכנסים לפרויקט עצמו ואז ל־`Storage`.
+
+## תשלום מקומי
+
+- כרגע יש שני מצבי checkout:
+  - `PAYMENT_PROVIDER=demo`: פותח ספר מיידית לצורך בדיקת זרימה בסיסית.
+  - `PAYMENT_PROVIDER=stub_redirect`: מדמה ספק redirect חיצוני, עם דף hosted פנימי ופתיחה רק אחרי עדכון שרת.
+- מסלולים שהוכנו:
+  - `/api/checkout`
+  - `/api/payment-hosted-stub`
+  - `/api/payment-return`
+  - `/api/payment-webhook`
+- הלקוח כבר לא אמור להסתמך רק על `?paid=true`. חזרה מהתשלום מסומנת ב־`?checkout=...`, והספר נפתח רק אחרי אימות שרת.
+- מחר אפשר לחבר ספק אמיתי לאותו חוזה בלי לשנות את ה־UI.
 
 ## מסמכים בריפו
 

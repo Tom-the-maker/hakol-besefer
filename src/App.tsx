@@ -256,9 +256,12 @@ const App: React.FC = () => {
           setPhase('not-found');
         };
 
-        // Check if returning from payment - verify server-side
+        // Check if returning from payment and always verify server-side.
         const params = new URLSearchParams(window.location.search);
-        const returningFromPayment = params.get('paid') === 'true';
+        const checkoutState = (params.get('checkout') || '').trim().toLowerCase();
+        const returningFromPayment =
+          params.get('paid') === 'true' ||
+          ['success', 'returned', 'failed', 'cancelled'].includes(checkoutState);
 
         try {
           const book = await loadBookBySlug(bookSlugFromUrl);
@@ -1137,7 +1140,22 @@ const PaymentView = ({
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.get('paid') === 'true') {
+    const checkoutState = (params.get('checkout') || '').trim().toLowerCase();
+    const paidFlag = params.get('paid') === 'true';
+
+    if (checkoutState === 'failed') {
+      setError('התשלום לא אושר. אפשר לנסות שוב.');
+      window.history.replaceState({}, '', window.location.pathname);
+      return;
+    }
+
+    if (checkoutState === 'cancelled') {
+      setStatusHint('התשלום בוטל. אפשר לחזור ולנסות שוב.');
+      window.history.replaceState({}, '', window.location.pathname);
+      return;
+    }
+
+    if (paidFlag || checkoutState === 'success') {
       paymentCompletedRef.current = true;
       onSuccess();
       window.history.replaceState({}, '', window.location.pathname);

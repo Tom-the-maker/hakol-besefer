@@ -2,18 +2,13 @@ import { getAuthUser } from '../lib/auth.js';
 import { getSupabaseAdmin } from '../lib/supabase.js';
 import { hashAccessToken } from '../lib/crypto.js';
 import { parseJsonBody, sendError, sendJson, setCors } from '../lib/http.js';
-import { getEnv } from '../lib/env.js';
-
-const PRODUCTS = {
-  digital: {
-    name: 'ספר דיגיטלי - מהדורה מלאה',
-    price: 3900,
-  },
-  print: {
-    name: 'ספר מודפס - כריכה קשה',
-    price: 14900,
-  },
-};
+import {
+  PRODUCTS,
+  applyCheckoutStateResult,
+  buildCheckoutSession,
+  getPaymentProvider,
+  logPaymentEvent,
+} from '../lib/payment.js';
 
 function getString(value) {
   return typeof value === 'string' ? value.trim() : '';
@@ -112,7 +107,7 @@ export default async function handler(req, res) {
   const authUser = await getAuthUser(req, supabase);
   const { data: book, error } = await supabase
     .from('books')
-    .select('id, slug, email, user_id, access_token_hash, payment_status, is_unlocked')
+    .select('id, slug, session_id, email, user_id, access_token_hash, payment_status, is_unlocked')
     .eq('slug', bookSlug)
     .maybeSingle();
 
@@ -133,41 +128,30 @@ export default async function handler(req, res) {
   }
 
   const { product: pricedProduct, coupon } = await resolveCoupon(supabase, parsed.body.couponCode, product);
-  const provider = getEnv('PAYMENT_PROVIDER', 'demo');
+  const provider = getPaymentProvider();
 
   if (provider === 'demo' || !provider) {
-    const updatePayload = {
-      is_unlocked: true,
-      payment_status: 'paid',
-      updated_at: new Date().toISOString(),
-    };
-
-    const { error: updateError } = await supabase
-      .from('books')
-      .update(updatePayload)
-      .eq('id', book.id);
-
-    if (updateError) {
-      return sendError(res, 500, 'Failed to update payment status', updateError.message);
-    }
-
-    if (coupon?.code) {
-      const { data: currentCoupon } = await supabase
-        .from('coupons')
-        .select('current_uses')
-        .eq('code', coupon.code)
-        .maybeSingle();
-
-      const currentUses = Number(currentCoupon?.current_uses) || 0;
-      try {
-        await supabase
-          .from('coupons')
-          .update({ current_uses: currentUses + 1 })
-          .eq('code', coupon.code);
-      } catch {
-        // Coupon usage increments are best-effort in demo mode.
-      }
-    }
+    const session = buildCheckoutSession({
+      req,
+      provider: 'demo',
+      book,
+      productType,
+      pricedProduct,
+      coupon,
+    });
+    await applyCheckoutStateResult(supabase, {
+      checkoutState: {
+        checkoutId: session.checkoutId,
+        provider: 'demo',
+        bookId: book.id,
+        bookSlug: book.slug,
+        amount: pricedProduct.price,
+        productType,
+        couponCode: coupon?.code || null,
+      },
+      result: 'success',
+      providerReference: 'demo-auto-unlock',
+    });
 
     return sendJson(res, 200, {
       provider: 'demo',
@@ -177,5 +161,45 @@ export default async function handler(req, res) {
     });
   }
 
-  return sendError(res, 501, 'Real payment providers are not configured yet');
+  if (provider === 'stub_redirect') {
+    const session = buildCheckoutSession({
+      req,
+      provider,
+      book,
+      productType,
+      pricedProduct,
+      coupon,
+    });
+
+    await logPaymentEvent(supabase, {
+      sessionId: book.session_id,
+      bookSlug: book.slug,
+      status: 'pending',
+      stage: 'payment_checkout_started',
+      actionType: 'payment_start',
+      amount: pricedProduct.price,
+      provider,
+      productType,
+      couponCode: coupon?.code || null,
+      checkoutId: session.checkoutId,
+    });
+
+    return sendJson(res, 200, {
+      provider,
+      productType,
+      amount: session.amount,
+      currency: session.currency,
+      paymentUrl: session.hostedStubUrl,
+      returnUrl: session.returnUrl,
+      webhookUrl: session.webhookUrl,
+      checkoutId: session.checkoutId,
+    });
+  }
+
+  return sendError(
+    res,
+    503,
+    'Payment provider is not configured yet',
+    `PAYMENT_PROVIDER=${provider}`,
+  );
 }

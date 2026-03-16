@@ -1,4 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
+import { loadLocalEnv } from './load_local_env.mjs';
+
+loadLocalEnv();
 
 function readEnv(name) {
   const value = process.env[name];

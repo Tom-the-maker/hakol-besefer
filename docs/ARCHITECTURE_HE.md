@@ -106,6 +106,14 @@
 - `source`
 - `pdf`
 
+## תשלום
+
+- ה־frontend מתחיל checkout רק דרך `POST /api/checkout`.
+- השרת מחזיר `paymentUrl` או `iframeUrl`; הלקוח לא משנה `payment_status` בעצמו.
+- חזרה מהדפדפן (`return`) לא פותחת ספר לבד. היא רק מחזירה את המשתמש ל־`/book/<slug>?checkout=...`.
+- פתיחת ספר אחרי תשלום נעשית רק אחרי אימות שרת ב־`verify_payment`, או דרך `payment-webhook`.
+- לצורכי בדיקה יש `stub_redirect` שמדמה ספק hosted בלי לעקוף את כללי השרת־בלבד.
+
 ## מה לא נבנה כרגע
 
 - טבלאות גרסאות
@@ -113,4 +121,3 @@
 - fallback בין `thumb` ל־`source`
 - שמירת `PDF` אוטומטית
 - גישה ישירה של frontend ל־Supabase tables
-
