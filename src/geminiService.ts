@@ -6,7 +6,7 @@ import { getCurrentSessionId, addLogEntry } from "./lib/sessionManager";
 // console.debug('🚀 GEMINI SERVICE LOADED: VER_03_SECURE');
 
 const LOG_MODEL_TEXT = 'gemini-2.0-flash';
-const LOG_MODEL_NARRATIVE = 'gemini-3.1-pro-preview';
+const LOG_MODEL_NARRATIVE = 'gemini-2.0-flash';
 const LOG_MODEL_IMAGE = 'gemini-3.1-flash-image-preview';
 const LOG_MODEL_IMAGE_MOCK = 'gemini-3.1-flash-image-preview-mock';
 
@@ -16,7 +16,7 @@ function normalizeModelForAdmin(model: unknown, fallback: string): string {
 
   const lower = raw.toLowerCase();
   if (lower === 'text-core-v1') return 'gemini-2.0-flash';
-  if (lower === 'story-crafter-v1') return 'gemini-3.1-pro-preview';
+  if (lower === 'story-crafter-v1') return 'gemini-2.0-flash';
   if (lower === 'scene-render-v1') return 'gemini-3.1-flash-image-preview';
   if (lower === 'scene-render-mock-v1') return 'gemini-3.1-flash-image-preview-mock';
   return raw;

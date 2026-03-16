@@ -217,11 +217,11 @@ const DASHBOARD_LOAD_MORE_STEP = 5;
 const DASHBOARD_MAX_LOADED_COVERS = 120;
 const DASHBOARD_MODEL_DEFAULTS = {
     chat: {
-        primary: 'gemini-3.1-flash-lite-preview',
+        primary: 'gemini-2.0-flash',
         fallback: 'gemini-2.0-flash',
     },
     story: {
-        primary: 'gemini-3.1-pro-preview',
+        primary: 'gemini-2.0-flash',
         fallback: 'כבוי כברירת מחדל',
     },
     image: {
@@ -709,7 +709,7 @@ function normalizeModelForVerification(model: unknown): string {
     const withoutPrefix = trimmed.replace(/^models\//, '');
 
     if (withoutPrefix === 'text-core-v1') return 'gemini-2.0-flash';
-    if (withoutPrefix === 'story-crafter-v1') return 'gemini-3.1-pro-preview';
+    if (withoutPrefix === 'story-crafter-v1') return 'gemini-2.0-flash';
     if (withoutPrefix === 'scene-render-v1') return 'gemini-3.1-flash-image-preview';
     if (withoutPrefix === 'scene-render-mock-v1') return 'gemini-3.1-flash-image-preview-mock';
     return withoutPrefix;
@@ -3324,10 +3324,10 @@ const DevDashboard: React.FC = () => {
                                                 <td className="py-5 px-6 text-center tabular-nums text-[#1890ff] font-bold">$0.40 <span className="text-[#909399] text-[13px] font-normal">/ 1M Tokens</span></td>
                                             </tr>
                                             <tr className="border-b border-[#dfe6ec] hover:bg-[#f5f7fa]">
-                                                <td className="py-5 px-6 font-bold text-[#303133] dir-ltr text-left rtl:text-right">story-crafter-v1</td>
+                                                <td className="py-5 px-6 font-bold text-[#303133] dir-ltr text-left rtl:text-right">gemini-2.0-flash</td>
                                                 <td className="py-5 px-6">הפקת סיפור סופי מלא</td>
-                                                <td className="py-5 px-6 text-center tabular-nums text-[#f56c6c] font-bold">$2.00 <span className="text-[#909399] text-[13px] font-normal">/ 1M Tokens</span></td>
-                                                <td className="py-5 px-6 text-center tabular-nums text-[#f56c6c] font-bold">$12.00 <span className="text-[#909399] text-[13px] font-normal">/ 1M Tokens</span></td>
+                                                <td className="py-5 px-6 text-center tabular-nums text-[#1890ff] font-bold">$0.10 <span className="text-[#909399] text-[13px] font-normal">/ 1M Tokens</span></td>
+                                                <td className="py-5 px-6 text-center tabular-nums text-[#1890ff] font-bold">$0.40 <span className="text-[#909399] text-[13px] font-normal">/ 1M Tokens</span></td>
                                             </tr>
                                             <tr className="hover:bg-[#f5f7fa]">
                                                 <td className="py-5 px-6 font-bold text-[#303133] dir-ltr text-left rtl:text-right">scene-render-v1</td>
