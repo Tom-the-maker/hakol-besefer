@@ -1,4 +1,3 @@
-import { getSupabaseAdmin } from '../lib/supabase.js';
 import { parseJsonBody, sendError, sendJson, setCors } from '../lib/http.js';
 
 function getString(value) {
@@ -28,26 +27,14 @@ export default async function handler(req, res) {
     return sendError(res, 400, 'Missing email or bookSlug');
   }
 
-  const supabase = getSupabaseAdmin();
-  if (supabase) {
-    try {
-      await supabase
-        .from('analytics_events')
-        .insert({
-          session_id: 'system',
-          book_slug: bookSlug,
-          event_name: 'ready_email_requested',
-          page: '/api/send-ready-email',
-          device_type: 'server',
-          event_data: {
-            email,
-            bookTitle: bookTitle || null,
-          },
-        });
-    } catch {
-      // Ignore telemetry failures for this noop endpoint.
-    }
-  }
-
-  return sendJson(res, 200, { success: true });
+  return sendJson(res, 200, {
+    success: true,
+    queued: false,
+    reason: 'email_provider_not_configured',
+    meta: {
+      bookSlug,
+      hasBookTitle: Boolean(bookTitle),
+      hasEmail: Boolean(email),
+    },
+  });
 }
