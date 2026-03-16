@@ -494,7 +494,7 @@ function shapeLegacyLibraryCard(supabase, book) {
     hero_name: book.hero_name,
     segments: [],
     segment_count: segments.length,
-    composite_image_url: displayImageUrl,
+    composite_image_url: thumbImageUrl || displayImageUrl,
     is_unlocked: Boolean(book.is_unlocked),
     payment_status: book.payment_status || 'pending',
     child_name: book.hero_name,
