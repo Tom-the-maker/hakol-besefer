@@ -12,6 +12,7 @@
     "preview": "vite preview",
     "smoke:contracts": "node scripts/smoke_contracts.mjs",
     "telemetry:report": "node scripts/telemetry_report.mjs",
+    "lab:reset": "node scripts/reset_lab_data.mjs",
     "check": "npm run smoke:contracts && npm run build"
   },
   "dependencies": {

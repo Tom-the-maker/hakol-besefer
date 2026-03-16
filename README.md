@@ -26,12 +26,14 @@ npm install
 npm run check
 npm run dev
 npm run telemetry:report
+npm run lab:reset
 ```
 
 ## בקרת שימוש
 
 - כברירת מחדל, `localhost` לא כותב `analytics_events` לסופבייס. אם צריך בדיקת טלמטריה מכוונת, מדליקים רק זמנית עם `VITE_ENABLE_LOCAL_ANALYTICS=1`.
 - `npm run telemetry:report` מציג ספירות של `books`, `system_logs`, `analytics_events`, וגם מצב `Storage` בשני ה־buckets.
+- `npm run lab:reset` מיועד ל־`lab` בלבד. בלי `--apply` הוא מציג dry-run; עם `--apply` הוא מוחק ספרי בדיקה, לוגים, אנליטיקה ונכסי Storage מהמעבדה בלבד.
 - מאחר ש־`lab` ו־`prod` יושבים על אותו ארגון בסופבייס, צריך לעקוב אחרי usage ברמת הארגון, לא רק ברמת הפרויקט.
 - כדי לראות זאת בדשבורד של סופבייס: נכנסים לארגון, ואז `Usage`. כדי לראות מה יושב בכל פרויקט, נכנסים לפרויקט עצמו ואז ל־`Storage`.
 
