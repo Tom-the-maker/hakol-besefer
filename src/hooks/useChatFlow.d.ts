@@ -1,0 +1,35 @@
+import { UserInputs, ArtStyle, ChatMessage, ChatStep } from '../types';
+export declare const useChatFlow: (onComplete: (inputs: UserInputs) => void, initialValues?: Partial<UserInputs>) => {
+    messages: ChatMessage[];
+    inputs: UserInputs;
+    setInputs: import("react").Dispatch<import("react").SetStateAction<UserInputs>>;
+    step: ChatStep;
+    isTyping: boolean;
+    suggestedTitles: string[];
+    isGeneratingTitles: boolean;
+    handlers: {
+        handleStart: () => Promise<void>;
+        handleNameSubmit: (name: string, isAutoStart?: boolean) => Promise<void>;
+        handleNameConfirm: (isCorrect: boolean) => void;
+        handleGenderSubmit: (input: string) => void;
+        handleAgeSubmit: (ageInput: number | string) => void;
+        handleChildPhotoUpload: (file: File) => void;
+        handleTopicSubmit: (topic: string) => Promise<void>;
+        handleAdditionalCharacterChoice: (choice: "skip" | "father" | "mother" | "grandmother" | "pet" | "other" | "partner" | "friend" | "child", customName?: string) => void;
+        handleParentPhotoUpload: (file: File | null) => Promise<void>;
+        handleStyleSelect: (styleInput: ArtStyle | string) => Promise<void>;
+        handleDedicationSubmit: (text: string) => void;
+        handleEmailSubmit: (email: string) => void;
+        handleConfirm: () => void;
+        handleCorrection: (correction: string) => void;
+        handlePhotoReplacementClarify: (target: "hero" | "companion") => void;
+        handleThirdCharacterChoice: (choice: "skip" | "father" | "mother" | "grandmother" | "grandfather" | "brother" | "sister" | "partner" | "friend" | "child" | "pet" | "other", customName?: string) => void;
+        handleThirdPhotoUpload: (file: File | null) => Promise<void>;
+        handleCharDetailsSubmit: (text: string) => Promise<void>;
+        handleCropComplete: (croppedBase64: string, width: number, height: number) => Promise<void>;
+        setIsCropperOpen: import("react").Dispatch<import("react").SetStateAction<boolean>>;
+        handleCropRetryDecision: (decision: "retry" | "use_anyway" | "new_photo") => void;
+    };
+    imageToCrop: string;
+    isCropperOpen: boolean;
+};

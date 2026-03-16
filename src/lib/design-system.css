@@ -1,0 +1,133 @@
+/* Cover Cub Design System - Core Button Styles */
+/* This file ensures consistent button styling across the entire app */
+
+:root {
+  /* Brand Colors */
+  --color-primary: #F9C922;
+  --color-primary-hover: #E6B61F;
+  --color-secondary: #8B572A;
+  --color-text-dark: #000000;
+  --color-text-light: #FFFFFF;
+  --color-border-dark: #000000;
+  --color-surface-light: #F8F9FA;
+  --color-error: #DC2626;
+  --color-success: #2D5A27;
+}
+
+/* Primary Button - Yellow/Gold */
+.btn-primary {
+  background-color: var(--color-primary) !important;
+  color: var(--color-text-dark) !important;
+  border: none !important;
+  font-weight: 600 !important;
+  border-radius: 50px !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-hover) !important;
+  color: var(--color-text-dark) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Secondary Button - Dark outline */
+.btn-secondary {
+  background-color: white !important;
+  color: var(--color-text-dark) !important;
+  border: 2px solid var(--color-text-dark) !important;
+  font-weight: 600 !important;
+  border-radius: 50px !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-surface-light) !important;
+  color: var(--color-text-dark) !important;
+  border-color: var(--color-text-dark) !important;
+}
+
+/* Success Button - Green */
+.btn-success {
+  background-color: var(--color-success) !important;
+  color: var(--color-text-light) !important;
+  border: none !important;
+  font-weight: 600 !important;
+  border-radius: 50px !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-success:hover {
+  background-color: #245020 !important;
+  color: var(--color-text-light) !important;
+}
+
+/* Danger/Error Button */
+.btn-danger {
+  background-color: var(--color-error) !important;
+  color: var(--color-text-light) !important;
+  border: none !important;
+  font-weight: 600 !important;
+  border-radius: 50px !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-danger:hover {
+  background-color: #B91C1C !important;
+  color: var(--color-text-light) !important;
+}
+
+/* Ensure all buttons have proper text contrast */
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  color: var(--color-text-dark) !important;
+}
+
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-secondary:active {
+  color: var(--color-text-dark) !important;
+  background-color: white !important;
+}
+
+.btn-success,
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active {
+  color: var(--color-text-light) !important;
+}
+
+/* Override any conflicting Tailwind or component library styles */
+button.btn-primary,
+button.btn-secondary,
+button.btn-success,
+button.btn-danger,
+.btn-primary,
+.btn-secondary, 
+.btn-success,
+.btn-danger {
+  -webkit-text-fill-color: unset !important;
+  text-fill-color: unset !important;
+}
+
+/* Specific fixes for common problem areas */
+[data-button-type="primary"] {
+  background-color: var(--color-primary) !important;
+  color: var(--color-text-dark) !important;
+}
+
+[data-button-type="secondary"] {
+  background-color: white !important;
+  color: var(--color-text-dark) !important;
+  border: 2px solid var(--color-text-dark) !important;
+}
+
+/* Force override for shadow DOM and component libraries */
+* {
+  --btn-primary-bg: var(--color-primary);
+  --btn-primary-text: var(--color-text-dark);
+  --btn-secondary-bg: white;
+  --btn-secondary-text: var(--color-text-dark);
+}

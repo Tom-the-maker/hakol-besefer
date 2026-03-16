@@ -1,0 +1,39 @@
+/* Global form theme for inputs, labels, placeholders, and file inputs */
+
+:root {
+  --cc-text: #1A1A1A;
+  --cc-muted: #4d4d4d;
+  --cc-border: rgba(77,77,77,0.3);
+  --cc-focus: #F9C922;
+}
+
+input, select, textarea {
+  color: var(--cc-text);
+  border-color: var(--cc-border);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--cc-muted) !important;
+  opacity: 1 !important;
+}
+
+label, .form-label { color: var(--cc-text) !important; }
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--cc-focus), transparent 70%);
+  border-color: var(--cc-focus);
+}
+
+/* File input */
+input[type="file"] { color: var(--cc-text) !important; }
+input[type="file"]::file-selector-button {
+  background-color: var(--cc-focus);
+  color: #000;
+  border: 0;
+  border-radius: 9999px;
+  padding: 8px 12px;
+  font-weight: 600;
+}
+

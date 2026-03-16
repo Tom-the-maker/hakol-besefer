@@ -1,0 +1,1560 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Tilt+Warp:XROT,YROT@0..45,0..45&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* Import Design System - must be before other CSS rules */
+@import './lib/design-system.css';
+@import './lib/formTheme.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.dev-dashboard-shell {
+  font-family: Arial, "Helvetica Neue", "Segoe UI", Roboto, ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #111827;
+}
+
+.dev-dashboard-shell,
+.dev-dashboard-shell * {
+  font-family: Arial, "Helvetica Neue", "Segoe UI", Roboto, ui-sans-serif, system-ui, sans-serif !important;
+}
+
+.dev-dashboard-shell .dev-mono {
+  font-family: Arial, "Helvetica Neue", "Segoe UI", Roboto, ui-sans-serif, system-ui, sans-serif !important;
+  font-variant-numeric: tabular-nums;
+}
+
+.dev-dashboard-shell .dev-nav-label {
+  color: #111827 !important;
+}
+
+.dev-dashboard-shell a,
+.dev-dashboard-shell button {
+  color: inherit;
+}
+
+/* Dev dashboard readability boost */
+.dev-dashboard-shell .text-xs {
+  font-size: 0.92rem !important;
+}
+
+.dev-dashboard-shell .text-sm {
+  font-size: 1.04rem !important;
+}
+
+.dev-dashboard-shell .text-base {
+  font-size: 1.16rem !important;
+}
+
+.dev-dashboard-shell .text-lg {
+  font-size: 1.36rem !important;
+}
+
+.dev-dashboard-shell .text-xl {
+  font-size: 1.58rem !important;
+}
+
+.dev-dashboard-shell .text-2xl {
+  font-size: 1.9rem !important;
+}
+
+.dev-dashboard-shell .text-3xl {
+  font-size: 2.2rem !important;
+}
+
+.dev-dashboard-shell .dev-muted {
+  color: #6b7280 !important;
+}
+
+/* Prevent body scroll when chat is open on mobile */
+@media (max-width: 767px) {
+  body.chat-open {
+    overflow: hidden !important;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+  }
+
+  html.chat-open {
+    overflow: hidden !important;
+    touch-action: none;
+  }
+
+  /* Prevent zoom on input focus */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+    transform: scale(1) !important;
+  }
+
+  /* Prevent iOS zoom on input focus */
+  @supports (-webkit-touch-callout: none) {
+
+    input,
+    textarea,
+    select {
+      font-size: 16px !important;
+    }
+  }
+}
+
+.chat-shell {
+  --chat-font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+}
+
+.chat-shell,
+.chat-shell * {
+  font-family: var(--chat-font-stack) !important;
+  letter-spacing: 0;
+}
+
+.chat-shell .text-sm {
+  font-size: 0.9rem !important;
+  line-height: 1.45 !important;
+}
+
+.chat-shell .text-base {
+  font-size: 0.98rem !important;
+  line-height: 1.48 !important;
+}
+
+.chat-shell .text-lg {
+  font-size: 1.19rem !important;
+  line-height: 1.4 !important;
+}
+
+.chat-shell .text-xl {
+  font-size: 1.3rem !important;
+  line-height: 1.26 !important;
+}
+
+.chat-shell .text-2xl {
+  font-size: 1.56rem !important;
+  line-height: 1.18 !important;
+}
+
+.chat-shell input,
+.chat-shell textarea,
+.chat-shell select {
+  font-size: 19px !important;
+  line-height: 1.2 !important;
+}
+
+/* GLOBAL mobile gutter utility - use for every mobile section */
+@media (max-width: 767px) {
+  .mobile-gutter {
+    /* gives 16 px on each side */
+    padding-inline: 16px;
+  }
+
+  /* Mobile-specific spacing utilities */
+  .mobile-section-padding {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .mobile-text-large {
+    font-size: 1.25rem;
+    line-height: 1.4;
+  }
+
+  .mobile-text-medium {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .mobile-text-small {
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+
+  /* Mobile button sizing */
+  .mobile-btn-large {
+    width: 100%;
+    height: 3.5rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  .mobile-btn-medium {
+    width: 100%;
+    height: 3rem;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  /* Mobile card spacing */
+  .mobile-card-padding {
+    padding: 1.5rem 1rem;
+  }
+
+  /* Mobile image constraints */
+  .mobile-image-constrained {
+    max-width: 100%;
+    height: auto;
+    max-height: 300px;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+
+    /* Design system color tokens */
+    --yellow: #F9C922;
+    --darkGrey: #1A1A1A;
+    --greyLight: #F1F1F1;
+    --grey-600: #4d4d4d;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+  }
+}
+
+@layer base {
+  html {
+    direction: rtl;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-white text-textPrimary font-body;
+    background: #FFFFFF;
+  }
+
+  /* Global typography rhythm: tighten spacing between header and subheader */
+  :root {
+    --heading-subheading-gap: 0.5rem;
+  }
+
+  @media (max-width: 767px) {
+    :root {
+      --heading-subheading-gap: 0.375rem;
+    }
+  }
+
+  :where(main, section, article, header) :is(h1, h2, h3, h4, h5, h6):has(+ p) {
+    margin-bottom: var(--heading-subheading-gap) !important;
+  }
+
+  :where(main, section, article, header) :is(h1, h2, h3, h4, h5, h6)+p {
+    margin-top: 0 !important;
+  }
+
+  /* Global input and textarea styling */
+  input,
+  textarea {
+    @apply text-gray-900;
+    color: #1A1A1A !important;
+    /* force dark text */
+    -webkit-text-fill-color: #1A1A1A !important;
+    /* override WebKit coloring */
+    caret-color: #1A1A1A !important;
+  }
+
+  /* Force autofill and default text to dark, remove yellow WebKit styles */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    -webkit-text-fill-color: #1A1A1A !important;
+    box-shadow: 0 0 0px 1000px #ffffff inset !important;
+    /* keep white bg */
+    transition: background-color 9999s ease-in-out 0s;
+    /* suppress yellow */
+    caret-color: #1A1A1A;
+  }
+
+  /* Global placeholder styling for all input and textarea elements */
+  ::placeholder {
+    color: #9CA3AF !important;
+    /* Tailwind: text-gray-400 */
+    opacity: 1;
+    /* Firefox */
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    @apply text-gray-400 !important;
+  }
+
+  /* Default headings for English/LTR */
+  h1 {
+    @apply text-4xl md:text-5xl font-extrabold text-textPrimary font-heading;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl font-extrabold text-textPrimary font-heading;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl font-bold text-textPrimary font-heading;
+  }
+
+  /* Hebrew font support - apply Fredoka to all elements in RTL */
+  [dir="rtl"] * {
+    font-family: 'Fredoka', sans-serif !important;
+  }
+
+  /* Hebrew headings override */
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3 {
+    font-family: 'Fredoka', sans-serif !important;
+  }
+
+  /* Keep navbar LTR even in RTL mode */
+  [dir="rtl"] .navbar,
+  [dir="rtl"] .navbar * {
+    direction: ltr !important;
+    text-align: left !important;
+  }
+
+  /* Focus styles for accessibility */
+  *:focus-visible {
+    @apply outline-2 outline-brandYellow outline-offset-2;
+  }
+
+  /* Specific override for Story Text */
+  .font-story-hebrew {
+    font-family: 'Heebo', sans-serif !important;
+  }
+}
+
+@layer components {
+
+  /* Global Button Primary */
+  .btn-primary {
+    @apply bg-brandYellow text-textPrimary font-bold px-6 py-3 rounded-pill shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5;
+  }
+
+  /* Guardrail: yellow interactive controls must always use black text/icon */
+  button[class*='bg-[#f6c85b]'],
+  button[class*='bg-[#F9C922]'],
+  a[class*='bg-[#f6c85b]'],
+  a[class*='bg-[#F9C922]'],
+  [role='button'][class*='bg-[#f6c85b]'],
+  [role='button'][class*='bg-[#F9C922]'] {
+    color: #000000 !important;
+    -webkit-text-fill-color: #000000 !important;
+  }
+
+  button[class*='bg-[#f6c85b]'] svg,
+  button[class*='bg-[#F9C922]'] svg,
+  a[class*='bg-[#f6c85b]'] svg,
+  a[class*='bg-[#F9C922]'] svg,
+  [role='button'][class*='bg-[#f6c85b]'] svg,
+  [role='button'][class*='bg-[#F9C922]'] svg {
+    color: #000000 !important;
+    stroke: #000000 !important;
+  }
+
+  /* Global Card Surface */
+  .card-surface {
+    @apply bg-white rounded-card p-6 space-y-4 shadow-md hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5;
+  }
+
+  .book-card {
+    @apply rounded-lg overflow-hidden hover:shadow-lg transition-shadow;
+  }
+
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 py-12 md:py-16;
+  }
+
+  /* Section full width container */
+  .section-full {
+    @apply w-full;
+  }
+
+  /* Bestseller heading responsive */
+  .bestseller-heading {
+    font-size: 3rem;
+    line-height: 3.5rem;
+    font-weight: 800;
+    color: #333333;
+  }
+
+  /* Consistent width system for navbar and hero card */
+  .navbar-container,
+  .hero-card {
+    max-width: 1300px;
+    /* Updated to match new layout */
+    margin: 0 auto;
+    /* Explicitly center the hero-card */
+  }
+
+  /* Navbar styling - remove padding, let hero-card control width */
+  .navbar {
+    width: 100%;
+    padding-inline: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  /* Bestseller section styles */
+  .bestseller-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+    justify-items: center;
+  }
+
+  .bestseller-card {
+    width: 320px;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: transform 120ms ease-out, box-shadow 120ms ease-out;
+  }
+
+  .bestseller-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Four books layout - controlled by hero-card wrapper */
+  .bestseller-grid-four {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    align-items: start;
+  }
+
+  .bestseller-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .book-cover-container {
+    width: 100%;
+    aspect-ratio: 1;
+    margin-bottom: 20px;
+    overflow: hidden;
+    border-radius: 16px;
+    transition: transform 120ms ease-out;
+    cursor: pointer;
+  }
+
+  .book-cover-container:hover {
+    transform: translateY(-4px);
+  }
+
+  .book-cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 120ms ease-out;
+  }
+
+  .book-cover-image:hover {
+    transform: scale(1.02);
+  }
+
+  .book-text-content {
+    width: 100%;
+  }
+
+  /* Mobile carousel styles */
+  .bestseller-mobile-carousel {
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .bestseller-carousel-container {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 0;
+    scroll-snap-type: x mandatory;
+  }
+
+  .bestseller-carousel-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .bestseller-carousel-track {
+    display: flex;
+    gap: 16px;
+    padding-bottom: 8px;
+    padding-right: 16px;
+  }
+
+  .bestseller-mobile-item {
+    flex: 0 0 auto;
+    width: calc(85% - 8px);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    scroll-snap-align: start;
+  }
+
+  .book-cover-mobile {
+    width: 100%;
+    aspect-ratio: 1;
+    margin-bottom: 20px;
+    overflow: hidden;
+    border-radius: 12px;
+    transition: transform 120ms ease-out;
+    cursor: pointer;
+  }
+
+  .book-cover-mobile:hover {
+    transform: translateY(-2px);
+  }
+
+  .book-cover-mobile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 120ms ease-out;
+  }
+
+  .book-cover-mobile-image:hover {
+    transform: scale(1.02);
+  }
+
+  /* Homepage reveal motion: sleek, subtle, and content-first */
+  .site-reveal {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+    transition:
+      opacity 560ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+  }
+
+  .site-reveal.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  @media (max-width: 767px) {
+    .site-reveal {
+      transform: translate3d(0, 16px, 0);
+      transition-duration: 480ms;
+    }
+  }
+
+  .book-text-mobile {
+    width: 100%;
+    text-align: left;
+  }
+
+  /* Hero responsive typography */
+  .hero-title {
+    font-size: 4rem;
+    line-height: 4.5rem;
+  }
+
+  @media (max-width: 1024px) {
+    .hero-title {
+      font-size: 3.5rem;
+      line-height: 4rem;
+    }
+
+    .navbar-container,
+    .hero-card {
+      max-width: 1000px !important;
+      /* Reduced for tablet */
+      padding-inline: 32px !important;
+    }
+
+    /* Bestseller responsive: 2 columns */
+    .bestseller-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+
+    /* Four books layout responsive: 2 columns on tablet */
+    .bestseller-grid-four {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 3rem;
+      line-height: 3.5rem;
+    }
+
+    .navbar-container,
+    .hero-card {
+      max-width: calc(100% - 32px) !important;
+      margin-inline: 16px !important;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero-title {
+      font-size: 2.5rem;
+      line-height: 3rem;
+    }
+
+    .hero-cta-button {
+      width: 100% !important;
+    }
+
+    .navbar-container,
+    .hero-card {
+      max-width: calc(100% - 32px) !important;
+      margin-inline: 16px !important;
+    }
+
+    /* Bestseller heading smaller on mobile */
+    .bestseller-heading {
+      font-size: 2rem !important;
+      line-height: 2.5rem !important;
+    }
+
+    /* Bestseller responsive: single column */
+    .bestseller-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .bestseller-card {
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .bestseller-cta {
+      width: 100% !important;
+    }
+
+    /* Four books layout responsive: single column on mobile */
+    .bestseller-grid-four {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      justify-items: center;
+    }
+
+    .bestseller-item {
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .bestseller-cta-four {
+      width: 100% !important;
+    }
+
+    /* Scroll arrow responsive - smaller gap */
+    .scroll-arrow-container {
+      padding-top: 8px !important;
+      padding-bottom: 12px !important;
+    }
+
+    /* MOBILE FIXES - Hide scroll arrow completely and adjust spacing */
+    .scroll-arrow-container {
+      display: none !important;
+    }
+
+    /* Remove gap between navbar and hero on mobile */
+    .section-hero {
+      padding-top: 56px !important;
+      /* Add space for fixed navbar height */
+    }
+
+    /* Remove bottom gap from navbar on mobile */
+    .navbar {
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+    }
+
+    /* Ensure navbar doesn't have extra spacing */
+    header.navbar {
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+    }
+
+    /* Make hero card fill the mobile gutter properly */
+    .hero-card {
+      /* Fills the 16-px gutter container and centers perfectly */
+      width: 100% !important;
+      max-width: none !important;
+      box-sizing: border-box !important;
+
+      /* Center the card within mobile-gutter space */
+      margin-left: auto !important;
+      margin-right: auto !important;
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+
+      /* NO padding-inline - let the section mobile-gutter handle spacing */
+      padding-inline: 0 !important;
+
+      /* Keep the existing top / bottom padding */
+    }
+
+    /* Keep hero spacing aligned with other section rhythm */
+    .section-hero {
+      padding-bottom: 48px !important;
+    }
+
+    /* Reduce bestseller section top padding on mobile */
+    .bestseller-section,
+    section.pt-24.pb-24.mobile-gutter {
+      padding-top: 40px !important;
+      /* A little bigger - was 32px */
+    }
+
+    /* Benefits section mobile overrides - match hero card pattern */
+    .benefits-card {
+      padding-top: 32px !important;
+      /* Mobile: 32px */
+      padding-bottom: 32px !important;
+      padding-inline: 0 !important;
+      /* Mobile: no internal padding, let mobile-gutter handle it */
+    }
+
+    /* Benefits section spacing - match hero-bestseller gap */
+    section.pt-16.md\\:pt-24.pb-16.md\\:pb-24.md\\:px-8.mobile-gutter {
+      padding-top: 40px !important;
+      /* Match bestseller section gap */
+    }
+
+    /* Benefits section mobile top padding override */
+    section:has(.benefits-card) {
+      padding-top: 2px !important;
+      /* Almost no gap - was 8px */
+    }
+
+    .bestseller-heading {
+      margin-top: 0 !important;
+      margin-bottom: 16px !important;
+    }
+
+    /* Mobile carousel - full hero card width, with gaps */
+    .bestseller-mobile-carousel {
+      margin: 0;
+    }
+
+    .bestseller-carousel-container {
+      padding: 0;
+    }
+
+    .bestseller-mobile-item {
+      width: calc(85% - 8px);
+      /* Show peek of next book */
+      align-items: flex-start;
+    }
+
+    .book-cover-mobile {
+      width: 100%;
+    }
+
+    .book-text-mobile {
+      width: 100%;
+      text-align: left;
+    }
+
+    /* Hero CTA button mobile override - much smaller */
+    .hero-cta-button {
+      min-width: 160px !important;
+      /* Even smaller - was 180px */
+      max-width: 80% !important;
+      /* Tighter constraint */
+      width: auto !important;
+      /* Override any width rules */
+    }
+  }
+
+  /* Benefits section desktop width and spacing overrides */
+  @media (min-width: 768px) {
+    .benefits-card.hero-card {
+      max-width: 1300px !important;
+      /* Updated to match new layout */
+      padding-inline: 64px !important;
+      /* Ensure proper desktop padding */
+    }
+
+    /* Reduce desktop gap between bestseller and Benefits */
+    section:has(.benefits-card) {
+      padding-top: 48px !important;
+      /* Smaller desktop gap - was pt-24 (96px) */
+    }
+
+    /* Desktop scroll arrow positioning - make visible in viewport */
+    .scroll-arrow-container {
+      padding-top: 16px !important;
+      padding-bottom: 24px !important;
+      margin-top: 0px !important;
+      /* Remove negative margin */
+    }
+
+    /* Keep desktop hero spacing aligned with other section rhythm */
+    .section-hero {
+      padding-bottom: 64px !important;
+    }
+
+    /* Align Benefits items with Bestseller books */
+    .benefits-card .hidden.md\\:grid>div:nth-child(1) {
+      transform: translateX(-35px);
+      /* Heart - move much more left to align with Yoga */
+    }
+
+    .benefits-card .hidden.md\\:grid>div:nth-child(2) {
+      transform: translateX(-6px);
+      /* Star - slight left to align with Bike */
+    }
+
+    .benefits-card .hidden.md\\:grid>div:nth-child(3) {
+      transform: translateX(6px);
+      /* Educational - slight right to align with Hello world */
+    }
+
+    .benefits-card .hidden.md\\:grid>div:nth-child(4) {
+      transform: translateX(35px);
+      /* Emotional - move much more right to align with Me and Flower */
+    }
+  }
+
+  /* Desktop navbar spacing fixes */
+  @media (min-width: 641px) {
+
+    /* Remove bottom gap from navbar on desktop */
+    .navbar {
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+    }
+
+    /* Ensure navbar doesn't have extra spacing */
+    header.navbar {
+      margin-bottom: 0 !important;
+      padding-bottom: 16px !important;
+      /* Minimal padding for visual separation */
+    }
+
+    /* Adjust hero section for fixed navbar on desktop */
+    .section-hero {
+      padding-top: 88px !important;
+      /* Slightly more space for desktop navbar */
+    }
+  }
+}
+
+/* Custom animations */
+@keyframes pulse-left {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(-16px);
+  }
+}
+
+@keyframes bounce {
+
+  0%,
+  20%,
+  53%,
+  80%,
+  100% {
+    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    transform: translate3d(0, 0, 0);
+  }
+
+  40%,
+  43% {
+    animation-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+    transform: translate3d(0, -8px, 0);
+  }
+
+  70% {
+    animation-timing-function: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+    transform: translate3d(0, -4px, 0);
+  }
+
+  90% {
+    transform: translate3d(0, -2px, 0);
+  }
+}
+
+.animate-pulse-left {
+  animation: pulse-left 2s infinite;
+  animation-delay: 1s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-reveal,
+  .site-reveal.is-visible {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* Benefits section mobile top padding override */
+section:has(.benefits-card) {
+  padding-top: 2px !important;
+  /* Almost no gap - was 8px */
+}
+
+/* Testimonials and FAQ components styling */
+
+/* Heading utility */
+.heading-xl {
+  @apply text-4xl md:text-5xl font-extrabold text-[#333333];
+}
+
+/* Form theme is imported from formTheme.css; keep this file focused on general site styles */
+
+/* Testimonials grid */
+.testimonials-grid {
+  display: grid;
+  gap: 48px;
+  grid-template-columns: repeat(3, 1fr);
+  /* ≥1024px */
+}
+
+/* Desktop testimonials carousel */
+.testimonials-desktop-carousel {
+  width: 100%;
+  overflow: hidden;
+}
+
+.testimonials-desktop-container {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 8px;
+}
+
+.testimonials-desktop-container::-webkit-scrollbar {
+  display: none;
+}
+
+.testimonials-desktop-track {
+  display: flex;
+  gap: 32px;
+  padding-right: 32px;
+}
+
+.testimonials-desktop-track .testimonial-card {
+  flex: 0 0 auto;
+  width: 300px;
+  scroll-snap-align: start;
+}
+
+@media (max-width: 1023px) {
+  .testimonials-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .testimonials-desktop-track .testimonial-card {
+    width: 280px;
+  }
+}
+
+/* Mobile testimonials carousel */
+.testimonials-mobile-carousel {
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+}
+
+.testimonials-carousel-container {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 0;
+  scroll-snap-type: x mandatory;
+}
+
+.testimonials-carousel-container::-webkit-scrollbar {
+  display: none;
+}
+
+.testimonials-carousel-track {
+  display: flex;
+  gap: 16px;
+  padding-bottom: 8px;
+  padding-right: 16px;
+}
+
+.testimonials-mobile-item {
+  flex: 0 0 auto;
+  width: calc(85% - 8px);
+  scroll-snap-align: start;
+}
+
+/* UseCases mobile carousel: keep swipe feel but avoid persistent aggressive scrollbar */
+.usecases-mobile-scroller {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.usecases-mobile-scroller::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+/* Testimonial cards */
+.testimonial-card {
+  border-radius: 24px;
+  padding: 32px;
+  min-height: 180px;
+  color: #1a1a1a;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+.avatar-dot {
+  display: block;
+  width: 24px;
+  height: 24px;
+  border-radius: 9999px;
+  background: #007e6e;
+  /* same green as logo */
+  margin-bottom: 20px;
+}
+
+.testimonial-card h3 {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.testimonial-card p {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Background colors */
+.bg-yellow {
+  background: #FFD54F;
+}
+
+.bg-grey {
+  background: #F5F5F5;
+}
+
+.bg-peach {
+  background: #FFAB91;
+}
+
+/* FAQ accordion */
+.faq-card {
+  max-width: 1300px;
+  /* Updated to match new layout */
+  margin-inline: auto;
+  /* Center the card */
+  border-radius: 24px;
+  background: #F5F5F5;
+  padding: 0;
+}
+
+.faq-item {
+  border-bottom: 1px solid #dcdcdc;
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+}
+
+.faq-summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 24px 32px;
+  /* Bigger padding */
+  list-style: none;
+  position: relative;
+  color: #1a1a1a;
+  font-size: 18px;
+  /* Bigger text */
+  transition: background-color 0.2s;
+}
+
+.faq-summary:hover {
+  background: #efefef;
+}
+
+.faq-open {
+  background: #efefef;
+}
+
+/* Custom chevron */
+.faq-chevron {
+  position: absolute;
+  right: 32px;
+  transition: transform 0.2s;
+  color: #1a1a1a;
+}
+
+.faq-open .faq-chevron {
+  transform: rotate(180deg);
+}
+
+.faq-content {
+  padding: 0 32px 32px 32px;
+  /* Bigger padding */
+}
+
+.faq-content p {
+  font-size: 16px;
+  /* Bigger text */
+  line-height: 1.6;
+  /* Better line height */
+  color: #1a1a1a;
+  margin: 0;
+}
+
+/* Ensure FAQ text aligns based on language, not document direction */
+.faq-card[style*="direction: ltr"] .faq-summary,
+.faq-card[style*="direction: ltr"] .faq-content,
+.faq-card[style*="direction: ltr"] .faq-content p {
+  text-align: left !important;
+  direction: ltr !important;
+}
+
+.faq-card[style*="direction: rtl"] .faq-summary,
+.faq-card[style*="direction: rtl"] .faq-content,
+.faq-card[style*="direction: rtl"] .faq-content p {
+  text-align: right !important;
+  direction: rtl !important;
+}
+
+@media (max-width: 767px) {
+  .faq-summary {
+    padding: 8px 10px;
+    height: 60px;
+    /* Reduced fixed height for a slimmer, uniform look */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+
+  .faq-content {
+    padding: 0 8px 16px 8px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .faq-chevron {
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
+    margin-right: 8px;
+  }
+
+  .faq-card[style*="direction: rtl"] .faq-chevron {
+    margin-right: 0;
+    margin-left: 8px;
+  }
+
+  /* Mobile FAQ card improvements */
+  .faq-card {
+    margin: 0 8px;
+  }
+
+  .faq-item {
+    margin-bottom: 1rem;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+}
+
+/* Footer styling */
+.footer-yellow {
+  background-color: #FFC735;
+}
+
+.footer-text-dark {
+  color: #1D1D1F;
+}
+
+.footer-text-gray {
+  color: #4d4d4d;
+}
+
+.footer-link {
+  color: #4d4d4d;
+  transition: color 0.2s;
+}
+
+.footer-link:hover {
+  color: #1D1D1F;
+}
+
+.footer-icon {
+  color: #1D1D1F;
+  transition: color 0.2s;
+}
+
+.footer-icon:hover {
+  color: #4d4d4d;
+}
+
+.footer-border {
+  border-top: 1px solid rgba(29, 29, 31, 0.2);
+}
+
+/* Footer mobile accordion */
+.footer-accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 0;
+  transition: background-color 0.2s;
+}
+
+.footer-accordion-header:hover {
+  background-color: rgba(29, 29, 31, 0.05);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.footer-accordion-arrow {
+  transition: transform 0.2s;
+  color: #1D1D1F;
+  font-size: 16px;
+}
+
+.footer-accordion-open {
+  transform: rotate(180deg);
+}
+
+/* Mobile Sticky CTA */
+.mobile-sticky-cta {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  padding: 16px;
+  background: white;
+  /* White background for frame */
+  border-top: 1px solid #e8e8e8;
+  /* Top border for frame effect */
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  /* Subtle shadow for depth */
+  transform: translateY(100%);
+  /* off canvas */
+  transition: transform .25s ease;
+}
+
+/* Mobile testimonials improvements */
+@media (max-width: 767px) {
+  .testimonials-mobile-item {
+    padding: 1.5rem 1rem;
+    margin: 0 0.5rem;
+    border-radius: 16px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .testimonials-mobile-item h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .testimonials-mobile-item p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    flex-grow: 1;
+  }
+
+  .testimonials-mobile-carousel {
+    padding: 0 0.5rem;
+  }
+}
+
+/* show state */
+.mobile-sticky-cta.show {
+  transform: translateY(0);
+}
+
+/* desktop/tablet – remove entirely */
+@media (min-width: 768px) {
+  .mobile-sticky-cta {
+    display: none;
+  }
+}
+
+/* prevent content being hidden */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 144px;
+    /* Space for sticky CTA plus the support question button */
+  }
+
+  /* Mobile scroll arrow improvements */
+  .scroll-arrow {
+    margin: 2rem auto;
+    padding: 1rem;
+  }
+
+  .scroll-arrow svg {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  /* Mobile section spacing improvements */
+  .section-hero {
+    padding-top: 4rem;
+    padding-bottom: 3rem;
+  }
+
+  /* Mobile card improvements */
+  .rounded-card {
+    border-radius: 20px;
+  }
+
+  /* Mobile button improvements */
+  .btn-primary {
+    min-height: 3.5rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(249, 199, 34, 0.3);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(249, 199, 34, 0.4);
+  }
+
+  /* Better spacing for mobile sections */
+  section {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Improve UseCases cards on mobile */
+  .use-case-card {
+    padding: 1rem;
+  }
+
+  /* Better spacing for HowItWorks mobile items */
+  .how-it-works-mobile-item {
+    padding-bottom: 1.5rem;
+  }
+
+  /* Improve Benefits icons on mobile */
+  .benefit-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+
+  /* Hero subtitle - force 2 lines only on mobile */
+  .hero-subtitle-mobile .hero-subtitle-line1,
+  .hero-subtitle-mobile .hero-subtitle-line2 {
+    display: inline-block;
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.5;
+  }
+
+  .hero-subtitle-mobile {
+    line-height: 1.5;
+  }
+
+  /* Force textarea text alignment to right on mobile */
+  textarea[dir="rtl"],
+  .hero-textarea-mobile,
+  textarea.hero-textarea-mobile {
+    text-align: right !important;
+    direction: rtl !important;
+    unicode-bidi: embed !important;
+  }
+
+  .hero-textarea-mobile::placeholder,
+  textarea.hero-textarea-mobile::placeholder {
+    text-align: right !important;
+    direction: rtl !important;
+  }
+
+  /* Force text alignment for textarea content */
+  textarea.hero-textarea-mobile {
+    text-align: right !important;
+  }
+
+  /* Additional fix - ensure RTL direction */
+  textarea.hero-textarea-mobile[dir="rtl"] {
+    direction: rtl !important;
+    text-align: right !important;
+  }
+}
+
+/* Our Books desktop carousel */
+.ourbooks-desktop-carousel {
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Mobile bestsellers improvements */
+@media (max-width: 767px) {
+  .bestseller-mobile-item {
+    padding: 1rem;
+    margin: 0 0.5rem;
+    border-radius: 16px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    min-width: 280px;
+  }
+
+  .book-cover-mobile {
+    margin-bottom: 1rem;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .book-cover-mobile-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .book-text-mobile {
+    padding: 0 0.5rem;
+  }
+
+  .bestseller-mobile-carousel {
+    padding: 0 0.5rem;
+  }
+
+  .bestseller-carousel-container {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-snap-type: x mandatory;
+  }
+
+  .bestseller-carousel-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .bestseller-carousel-track {
+    display: flex;
+    gap: 1rem;
+    padding: 0 0.5rem;
+  }
+}
+
+.ourbooks-desktop-container {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 8px;
+}
+
+.ourbooks-desktop-container::-webkit-scrollbar {
+  display: none;
+}
+
+.ourbooks-desktop-track {
+  display: flex;
+  gap: 32px;
+  padding-right: 32px;
+}
+
+.ourbooks-desktop-item {
+  flex: 0 0 auto;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  scroll-snap-align: start;
+}
+
+/* Force Arial specifically for the Dev Dashboard in RTL mode */
+.dev-dashboard-root,
+.dev-dashboard-root * {
+    font-family: Arial, Helvetica, sans-serif !important;
+}

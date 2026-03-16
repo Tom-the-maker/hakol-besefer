@@ -1,0 +1,352 @@
+{
+  "nav": {
+    "stories": "Stories",
+    "pricing": "Pricing",
+    "faq": "FAQ",
+    "createBook": "Create a Book",
+    "login": "Login",
+    "myOrders": "My Orders"
+  },
+  "hero": {
+    "title": "Turn Your Child Into",
+    "subtitle": "the Hero of Their Story",
+    "description": "Upload a photo, choose a story, and receive a magical printed book starring your child.",
+    "cta": "Create Your Book",
+    "testimonial": "Real books created by real families ✨",
+    "imageAlt": "Children holding personalized books with their names on the cover"
+  },
+  "bestsellers": {
+    "title": "Our Bestsellers",
+    "viewAll": "View All Stories",
+    "loading": "Loading books...",
+    "noBooks": "No published books available yet.",
+    "bookDescription": "A beautifully printed book with your child\ninside the adventure",
+    "viewBook": "View this book"
+  },
+  "benefits": {
+    "title": "Why It's a Great Gift",
+    "perfectGift": {
+      "title": "Perfect Gift",
+      "description": "Create a memorable gift that will be cherished for years to come."
+    },
+    "personalizedStory": {
+      "title": "Personalized Story",
+      "description": "Your child becomes the hero of their own adventure."
+    },
+    "qualityBooks": {
+      "title": "Quality Books",
+      "description": "Premium printing and durable binding built to last."
+    },
+    "educational": {
+      "title": "Educational",
+      "description": "Encourages reading and sparks imagination."
+    }
+  },
+  "testimonials": {
+    "title": "What Parents Say",
+    "testimonials": [
+      {
+        "name": "Sarah J.",
+        "text": "My daughter was absolutely thrilled to see herself as a character in a story! The quality of the book exceeded my expectations. Will definitely order again for birthdays."
+      },
+      {
+        "name": "Michael T.",
+        "text": "My son carries his personalized book everywhere now. It's become his favorite bedtime story. The illustrations are fantastic and the story is engaging."
+      },
+      {
+        "name": "Emma K.",
+        "text": "Ordered a book for my nephew's birthday and was blown away by it. The process was so easy and the final product is amazing. Highly recommend!"
+      },
+      {
+        "name": "David R.",
+        "text": "What a wonderful gift! My 4-year-old was so excited to see herself as the main character. The personalization is incredible and the story kept her engaged from start to finish."
+      },
+      {
+        "name": "Lisa M.",
+        "text": "Perfect for bedtime reading! My twins each have their own personalized book and they love comparing their adventures. Great quality and fast delivery too."
+      },
+      {
+        "name": "Jennifer W.",
+        "text": "Bought this for my grandson's 3rd birthday and it was the hit of the party! He keeps asking us to read 'his book' over and over. Worth every penny!"
+      }
+    ]
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "questions": [
+      {
+        "question": "How does the personalization process work?",
+        "answer": "Simply upload a photo of your child, enter their name and details, then choose from our selection of stories. Our AI will create a personalized illustration of your child that matches the art style of the book. You'll be able to preview the cover before ordering."
+      },
+      {
+        "question": "How long does it take to receive my book?",
+        "answer": "Once you approve the preview and complete your order, books are typically printed within 2-3 business days and shipped via standard mail (5-7 days) or express shipping (2-3 days)."
+      },
+      {
+        "question": "Can I edit the book after it's been created?",
+        "answer": "You can make edits to your personalization details (name, age, etc.) before finalizing your purchase. After the book has been sent to print, no further changes can be made."
+      },
+      {
+        "question": "What age range are these books suitable for?",
+        "answer": "Our books are designed for children aged 2-8 years old, with engaging stories and beautiful illustrations that capture young imaginations."
+      },
+      {
+        "question": "Can I create books for multiple children?",
+        "answer": "Yes! You can create unique personalized books for each child in your family. Each book is individually customized with the child's name, photo, and chosen story."
+      }
+    ]
+  },
+  "faqPage": {
+    "pageTitle": "FAQ – Cover Cub",
+    "pageDescription": "Frequently asked questions about the personalized book creation process, payment, and shipping.",
+    "title": "Frequently Asked Questions",
+    "questions": [
+      { "question": "How does the personalization process work?", "answer": "Simply upload a photo of your child, enter their name and details, then choose from our selection of stories. Our AI will create a personalized illustration of your child that matches the art style of the book. You'll be able to preview the cover before ordering." },
+      { "question": "How long does it take to receive my book?", "answer": "Once you approve the preview and complete your order, books are typically printed within 2-3 business days and shipped via standard mail (5-7 days) or express shipping (2-3 days)." },
+      { "question": "Can I edit the book after it's been created?", "answer": "You can make edits to your personalization details (name, age, etc.) before finalizing your purchase. After the book has been sent to print, no further changes can be made." },
+      { "question": "What age range are these books suitable for?", "answer": "Our books are designed for children aged 2-8 years old, with engaging stories and beautiful illustrations that capture young imaginations." },
+      { "question": "Can I create books for multiple children?", "answer": "Yes! You can create unique personalized books for each child in your family. Each book is individually customized with the child's name, photo, and chosen story." },
+      { "question": "What is the quality of the printed books?", "answer": "Our books are printed on high-quality paper with durable binding, designed to withstand enthusiastic reading by young children. We offer both softcover and hardcover options." },
+      { "question": "Do you ship internationally?", "answer": "Yes, we ship worldwide. International shipping rates and delivery times vary by location. You'll see the exact shipping costs during checkout." },
+      { "question": "How secure is my child's photo and data?", "answer": "We take privacy seriously. All photos and personal information are encrypted and used solely for creating your personalized book. We never share your data with third parties, and photos are deleted from our servers after production." },
+      { "question": "Can I order additional copies of a book I've already created?", "answer": "Yes! You can order additional copies of any book you've created by visiting your dashboard and selecting 'Reorder' on the book you want more copies of." },
+      { "question": "What if I'm not satisfied with my book?", "answer": "We have a 100% satisfaction guarantee. If you're not happy with your book for any reason, please contact our customer support team within 30 days of receipt, and we'll work to make it right." }
+    ],
+    "stillHaveQuestions": "Still have questions?",
+    "contactHelp": "We're here to help! Contact our customer support team.",
+    "contactSupport": "Contact Customer Support",
+    "supportHours": "Our team is available Monday-Friday, 9am-5pm EST"
+  },
+  "footer": {
+    "description": "Personalized children's books where your child is the hero of their own adventure.",
+    "navigation": "Navigation",
+    "customerSupport": "Customer Support",
+    "connectWithUs": "Connect With Us",
+    "newsletter": "Sign up for our newsletter to receive updates and special offers.",
+    "copyright": "All rights reserved.",
+    "links": {
+      "home": "Home",
+      "stories": "Stories",
+      "faq": "FAQ",
+      "createBook": "Create a Book",
+      "contact": "Contact Us",
+      "terms": "Terms of Use",
+      "privacy": "Privacy Policy",
+      "shipping": "Shipping Information"
+    }
+  },
+  "bookTitles": {
+    "yoga": "Yoga",
+    "bike": "Bike",
+    "helloWorld": "Hello world",
+    "meAndFlower": "Me and Flower"
+  },
+  "stories": {
+    "title": "Our Stories",
+    "description": "Discover our amazing collection of stories. Every story is personalized for your child and full of exciting adventures.",
+    "loading": "Loading stories...",
+    "noBooks": "No published books available yet.",
+    "viewAll": "View All Stories",
+    "cta": {
+      "title": "Ready to create your child's story?",
+      "description": "Create a personalized book with your child as the hero of the story",
+      "button": "Create Book Now"
+    }
+  },
+  "notFound": {
+    "title": "404",
+    "message": "Oops! Page not found",
+    "returnHome": "Return to Home"
+  },
+  "createBook": {
+    "pageTitle": "Create Book – Cover Cub",
+    "pageDescription": "Upload a photo, enter details, and choose a story to create a magical personalized book.",
+    "steps": {
+      "upload": "Upload Photo",
+      "uploadPhoto": "Upload Photo",
+      "email": "Email Address",
+      "childDetails": "Child Details",
+      "storySelection": "Choose Story",
+      "chooseStory": "Choose Story",
+      "preview": "Preview"
+    },
+    "errors": {
+      "orderCreationFailed": "Error creating order"
+    },
+    "messages": {
+      "emailSaved": "Email address saved successfully"
+    },
+    "stepTitles": {
+      "uploadPhotoFull": "Upload The Star Of The Story",
+      "uploadPhotoMobile": "Upload The Star Of The Story",
+      "childDetailsFull": "Tell Us About Your Kid",
+      "childDetailsMobile": "Tell Us About Your Kid",
+      "chooseStory": "Choose A Story",
+      "preview": "Preview your book"
+    },
+    "privacyNotice": "Your child's privacy is important to us. Photos are securely processed and used only to create your personalized book.",
+    "messages": {
+      "photoUploaded": "Photo uploaded successfully!",
+      "bookCreated": "Book created! Redirecting to preview...",
+      "bookDetailsNotFound": "Book details not found. Please go back and try again.",
+      "errorLoadingDetails": "Error loading book details. Please try again."
+    },
+    "loading": {
+      "makingMagic": "Making magic",
+      "timeEstimate": "This might take up to a minute",
+      "goBack": "Go Back"
+    }
+  },
+  "payment": {
+    "title": "Complete Your Order",
+    "subtitle": "You're one step away from creating {childName}'s personalized book!",
+    "orderSummary": "Order Summary",
+    "bookFor": "Personalized book for {childName}",
+    "personalizedBook": "Personalized Book",
+    "upgradeOptions": "Upgrade Your Order",
+    "bookType": "Book Type",
+    "softcover": "Softcover - $24.99",
+    "hardcover": "Hardcover - $34.99 (+$10.00)",
+    "addPoster": "Add matching poster - $9.99",
+    "addColoringBook": "Add coloring book - $7.99",
+    "subtotal": "Subtotal",
+    "shipping": "Shipping",
+    "total": "Total",
+    "paymentDetails": "Payment Details",
+    "email": "Email Address",
+    "cardNumber": "Card Number",
+    "expiryDate": "Expiry Date",
+    "cvv": "CVV",
+    "nameOnCard": "Name on Card",
+    "billingAddress": "Billing Address",
+    "city": "City",
+    "zipCode": "ZIP Code",
+    "country": "Country",
+    "completeOrder": "Complete Order",
+    "processing": "Processing...",
+    "messages": {
+      "paymentSuccess": "Payment successful! Your book is being prepared.",
+      "paymentFailed": "Payment failed. Please try again.",
+      "loadingDetails": "Loading book details..."
+    }
+  },
+  "success": {
+    "title": "Your Book is Ready!",
+    "subtitle": "Thank you for your order. Your personalized book is being prepared.",
+    "orderDetails": "Order Details",
+    "orderNumber": "Order Number",
+    "estimatedDelivery": "Estimated Delivery",
+    "accessYourBook": "Access Your Book",
+    "downloadBook": "Download Your Book",
+    "viewOrder": "View Order Details",
+    "backToHome": "Back to Home",
+    "trackOrder": "Track Your Order",
+    "loading": "Loading your book details...",
+    "downloadStarted": "Download started!",
+    "errorLoading": "Error loading book details. Please try again.",
+    "downloadNote": "Your digital book is ready for download. The physical book will be shipped to your address within 5-7 business days."
+  },
+  "bookPreview": {
+    "title": "Your Book is Ready!",
+    "orderNow": "Order Now",
+    "createAnother": "Create Another Book",
+    "openBook": "Open Book",
+    "closeBook": "Close Book",
+    "previousPage": "Previous Page",
+    "nextPage": "Next Page",
+    "bookNotFound": "Book not found",
+    "returnHome": "Return Home",
+    "loading": "We're creating your book cover...",
+    "loadingTime": "30–45 seconds",
+    "messages": {
+      "redirectingCheckout": "Redirecting to checkout...",
+      "noPagesUploaded": "No pages have been uploaded for this book yet. Please check back later or contact support.",
+      "pageText": "Page {pageNumber} of your personalized adventure story. Each illustration brings the magic to life!"
+    },
+    "afterPayment": "After payment, {childName} will appear in all pages of the magical adventure story!",
+    "personalizedPreview": "Personalized preview {number}",
+    "starring": "Starring {childName}",
+    "coverBackText": "This book can be yours.",
+    "coverReadyDescription": "Your personalized cover is ready! Click on the book to view the story preview pages. After payment, {childName} will appear in all pages of this adventure story."
+  },
+  "uploadStep": {
+    "uploadPhoto": "Upload Photo",
+    "tryAgain": "Try Again",
+    "continue": "Continue",
+    "analyzing": "Analyzing photo...",
+    "backToBooks": "back to our books page",
+    "tryDifferentPhoto": "Please try uploading a different photo.",
+    "uploadDifferentPhoto": "Upload a different photo",
+    "photoTips": {
+      "clearWellLit": "Clear & well-lit",
+      "multipleKids": "Multiple kids",
+      "faceTurned": "Face turned",
+      "faceCovered": "Face covered"
+    },
+    "errors": {
+      "multiFace": "More than one face detected.\nPlease choose a photo with just your child.",
+      "noFace": "No face detected.\nPlease make sure your child's face is clearly visible and facing the camera.",
+      "profileFace": "We need a photo where your child is facing the camera.",
+      "faceCovered": "We can't see the full face.\nTry another photo.",
+      "tooDark": "Lighting is too dark.\nTake a clearer photo.",
+      "tooBright": "Lighting is too bright.\nTake a clearer photo.",
+      "blurry": "Photo is a bit blurry.\nTry a sharper image.",
+      "filtered": "Please use a real, unfiltered photo.",
+      "inappropriate": "That picture isn't suitable.\nTry another one.",
+      "fileSize": "Image file is too large.\nPlease upload smaller than 10MB.",
+      "fileType": "Please upload an image file.\nJPEG or PNG only.",
+      "resolution": "Image resolution too low.\nPlease upload higher quality photo.",
+      "faceTooSmall": "Please get closer – the face should fill about half the image",
+      "faceTooLarge": "Please step back – the face should fill about half the image",
+      "eyesClosed": "Please make sure the eyes are open and looking at the camera",
+      "notForwardFacing": "Please look directly at the camera (not in profile)",
+      "glasses": "Please upload a photo without sunglasses",
+      "illustrated": "We only accept real photos, not illustrations",
+      "generic": "Photo validation failed. Please try another image."
+    }
+  },
+  "childDetailsStep": {
+    "continue": "Continue",
+    "backToUpload": "back to upload photo",
+    "form": {
+      "namePlaceholder": "Enter child's name",
+      "agePlaceholder": "Age",
+      "genderPlaceholder": "Gender",
+      "genderOptions": {
+        "boy": "Boy",
+        "girl": "Girl",
+        "neutral": "Gender Neutral"
+      },
+      "ageFormat": "{age} year{plural} old"
+    }
+  },
+  "scroll": {
+    "scroll": "Scroll",
+    "down": "Down"
+  },
+  "pricing": {
+    "pageTitle": "Pricing – Cover Cub",
+    "pageDescription": "Choose between digital PDF, hardcover, or bundle – a personalized book tailored for your child.",
+    "title": "Clear Pricing, No Surprises",
+    "popular": "POPULAR",
+    "createBook": "Create your book",
+    "worldwideShipping": "Worldwide shipping starts at $9.90",
+    "moneyBack": "100% money-back guarantee",
+    "pdf": {
+      "title": "Digital PDF"
+    },
+    "hardcover": {
+      "title": "Hardcover Print"
+    },
+    "bundle": {
+      "title": "Bundle (PDF + Print)"
+    },
+    "features": {
+      "personalizedStory": "Personalized story & AI images",
+      "childName": "Child's name & dedication",
+      "premiumPaper": "12 pages, premium paper",
+      "freeShipping": "Free Israel shipping"
+    },
+    "productName": "Personalized Children's Book"
+  }
+} 
