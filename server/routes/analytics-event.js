@@ -35,8 +35,13 @@ export default async function handler(req, res) {
 
   const sessionId = getString(parsed.body.session_id);
   const eventName = getString(parsed.body.event_name);
+  const page = getString(parsed.body.page);
   if (!sessionId || !eventName) {
     return sendError(res, 400, 'Missing analytics event fields');
+  }
+
+  if (page.startsWith('/dev')) {
+    return sendJson(res, 200, { success: true, skipped: 'dev-page' });
   }
 
   const authUser = await getAuthUser(req, supabase);
@@ -47,7 +52,7 @@ export default async function handler(req, res) {
       user_id: authUser?.id || null,
       book_slug: getString(parsed.body.book_slug) || null,
       event_name: eventName,
-      page: getString(parsed.body.page) || null,
+      page: page || null,
       device_type: getString(parsed.body.device_type) || null,
       event_data: normalizeObject(parsed.body.event_data),
     });

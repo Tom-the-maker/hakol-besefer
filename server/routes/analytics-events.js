@@ -1,3 +1,4 @@
+import { serializeDashboardAnalyticsEvent } from '../lib/dashboard.js';
 import { getSupabaseAdmin } from '../lib/supabase.js';
 import { parseJsonBody, sendError, sendJson, setCors } from '../lib/http.js';
 
@@ -7,6 +8,7 @@ function getString(value) {
 
 export default async function handler(req, res) {
   setCors(res, 'POST, OPTIONS');
+  res.setHeader('Cache-Control', 'no-store');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -39,13 +41,13 @@ export default async function handler(req, res) {
     .select('session_id, event_name, event_data, page, device_type, created_at')
     .in('session_id', sessionIds)
     .order('created_at', { ascending: true })
-    .limit(20000);
+    .limit(5000);
 
   if (error) {
     return sendError(res, 500, 'Failed to load analytics events', error.message);
   }
 
   return sendJson(res, 200, {
-    events: data || [],
+    events: Array.isArray(data) ? data.map((row) => serializeDashboardAnalyticsEvent(row)) : [],
   });
 }

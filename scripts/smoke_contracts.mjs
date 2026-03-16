@@ -7,6 +7,10 @@ import {
   serializeDashboardBookSummary,
   serializeLibraryBookSummary,
 } from '../server/lib/books.js';
+import {
+  serializeDashboardAnalyticsEvent,
+  serializeDashboardSystemLog,
+} from '../server/lib/dashboard.js';
 
 function createFakeSupabase() {
   return {
@@ -125,6 +129,84 @@ async function run() {
   });
   assert.equal(invalidPayload.success, false);
   assert.equal(hasForbiddenKeys({ display_image_url: 'https://bad.example/heavy.jpg' }, FORBIDDEN_BOOK_METADATA_KEYS), true);
+
+  const dashboardLog = serializeDashboardSystemLog({
+    id: 101,
+    created_at: '2026-03-16T00:00:00.000Z',
+    session_id: 'session-1',
+    action_type: 'generateStory',
+    model_name: 'story-crafter-v1',
+    input_tokens: 1200,
+    output_tokens: 2400,
+    status: 'success',
+    hero_name: 'נעם',
+    topic: 'אומץ',
+    art_style: 'watercolor',
+    hero_gender: 'male',
+    hero_age: 8,
+    book_title: 'המסע של נעם',
+    parent_character: 'אבא',
+    provider_model: 'gemini-2.0-flash',
+    estimated_cost_usd: 0.0004,
+    duration_ms: 1820,
+    metadata: {
+      requested_model: 'gemini-2.0-flash',
+      provider_model_source: 'provider_model_version',
+      result_data: 'data:image/png;base64,AAAA',
+      request_json: {
+        parentName: 'אבא',
+        parentCharacter: 'אבא',
+        ignored: 'x'.repeat(300),
+      },
+      response_json: {
+        prompt_token: 'prompt-123',
+        segments: Array.from({ length: 10 }, (_, index) => `segment-${index + 1}`),
+        panel_plan: ['panel-a', 'panel-b'],
+        huge_blob: 'x'.repeat(5000),
+      },
+      reference_analysis: [
+        {
+          slot: 'hero',
+          usage: { input: 123, output: 45 },
+          profile: {
+            summary: 'short summary',
+            identityAnchors: ['anchor-1', 'anchor-2'],
+          },
+        },
+      ],
+    },
+  });
+  assert.equal(dashboardLog.child_name, 'נעם');
+  assert.equal(dashboardLog.extra_char_1, 'אבא');
+  assert.equal(dashboardLog.metadata.result_data, '[inline-image]');
+  assert.equal(dashboardLog.metadata.request_json.parentName, 'אבא');
+  assert.equal('ignored' in dashboardLog.metadata.request_json, false);
+  assert.equal(dashboardLog.metadata.response_json.prompt_token, 'prompt-123');
+  assert.equal(Array.isArray(dashboardLog.metadata.response_json.segments), true);
+  assert.equal('huge_blob' in dashboardLog.metadata.response_json, false);
+
+  const dashboardEvent = serializeDashboardAnalyticsEvent({
+    session_id: 'session-1',
+    event_name: 'ui_click',
+    page: '/book/abc',
+    device_type: 'desktop',
+    created_at: '2026-03-16T00:00:00.000Z',
+    event_data: {
+      target_label: 'כפתור המשך',
+      target_path: 'button > span',
+      nested: {
+        text_preview: 'x'.repeat(300),
+        deeper: {
+          impossible: {
+            value: 'hidden',
+          },
+        },
+      },
+    },
+  });
+  assert.equal(dashboardEvent.event_data.target_label, 'כפתור המשך');
+  assert.equal(typeof dashboardEvent.event_data.nested.text_preview, 'string');
+  assert.equal(dashboardEvent.event_data.nested.deeper.impossible, '[max-depth]');
 
   console.log('smoke_contracts: ok');
 }

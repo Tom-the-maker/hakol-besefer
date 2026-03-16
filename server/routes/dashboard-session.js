@@ -6,6 +6,7 @@ import {
   SYSTEM_LOG_WITH_PROMPT_SELECT,
   serializeDashboardBookSummary,
 } from '../lib/books.js';
+import { serializeDashboardAnalyticsEvent, serializeDashboardSystemLog } from '../lib/dashboard.js';
 import { getSupabaseAdmin } from '../lib/supabase.js';
 import { getNumberQuery, getStringQuery, sendError, sendJson, setCors } from '../lib/http.js';
 
@@ -74,8 +75,7 @@ export default async function handler(req, res) {
   return sendJson(res, 200, {
     sessionId,
     book: bookResult.data ? serializeDashboardBookSummary(supabase, bookResult.data) : null,
-    logs: logsResult.data || [],
-    events: eventsResult.data || [],
+    logs: Array.isArray(logsResult.data) ? logsResult.data.map((row) => serializeDashboardSystemLog(row)) : [],
+    events: Array.isArray(eventsResult.data) ? eventsResult.data.map((row) => serializeDashboardAnalyticsEvent(row)) : [],
   });
 }
-

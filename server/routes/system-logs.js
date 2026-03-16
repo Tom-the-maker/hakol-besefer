@@ -1,8 +1,11 @@
+import { SYSTEM_LOG_WITH_PROMPT_SELECT } from '../lib/books.js';
+import { serializeDashboardSystemLog } from '../lib/dashboard.js';
 import { getSupabaseAdmin } from '../lib/supabase.js';
 import { getStringQuery, sendError, sendJson, setCors } from '../lib/http.js';
 
 export default async function handler(req, res) {
   setCors(res, 'GET, OPTIONS');
+  res.setHeader('Cache-Control', 'no-store');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -24,7 +27,7 @@ export default async function handler(req, res) {
 
   const { data, error } = await supabase
     .from('system_logs')
-    .select('*')
+    .select(SYSTEM_LOG_WITH_PROMPT_SELECT)
     .eq('session_id', sessionId)
     .order('created_at', { ascending: true });
 
@@ -33,6 +36,6 @@ export default async function handler(req, res) {
   }
 
   return sendJson(res, 200, {
-    logs: data || [],
+    logs: Array.isArray(data) ? data.map((row) => serializeDashboardSystemLog(row)) : [],
   });
 }

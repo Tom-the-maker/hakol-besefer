@@ -3,6 +3,7 @@ import { sendError, sendJson, setCors } from '../lib/http.js';
 
 export default async function handler(req, res) {
   setCors(res, 'GET, OPTIONS');
+  res.setHeader('Cache-Control', 'no-store');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -17,21 +18,17 @@ export default async function handler(req, res) {
     return sendError(res, 503, 'Supabase server configuration is missing');
   }
 
-  const { data, error } = await supabase
-    .from('system_logs')
-    .select('session_id, estimated_cost_usd');
+  const { data, error } = await supabase.rpc('get_system_log_stats');
 
   if (error) {
     return sendError(res, 500, 'Failed to load system log stats', error.message);
   }
 
-  const rows = data || [];
-  const totalSessions = new Set(rows.map((row) => row.session_id).filter(Boolean)).size;
-  const totalCost = rows.reduce((sum, row) => sum + (Number(row.estimated_cost_usd) || 0), 0);
+  const row = Array.isArray(data) ? data[0] : data;
 
   return sendJson(res, 200, {
-    totalSessions,
-    totalCost,
-    totalCalls: rows.length,
+    totalSessions: Number(row?.total_sessions) || 0,
+    totalCost: Number(row?.total_cost) || 0,
+    totalCalls: Number(row?.total_calls) || 0,
   });
 }

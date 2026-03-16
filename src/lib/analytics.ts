@@ -37,11 +37,36 @@ const NON_DEDUPED_EVENTS = new Set<EventName>([
 ]);
 
 const WINDOW_SCROLL_MILESTONES = [10, 25, 50, 75, 90, 100];
+const HIGH_VOLUME_LOCAL_EVENTS = new Set<EventName>([
+  'ui_click',
+  'ui_scroll',
+  'ui_input',
+  'chat_input',
+  'chat_parse',
+]);
 
 const deviceType = (): string => window.innerWidth < 768 ? 'mobile' : 'desktop';
 
 let lastEvent = { signature: '', time: 0 };
 let uiTelemetryCleanup: (() => void) | null = null;
+
+function isLocalRuntime(): boolean {
+  if (typeof window === 'undefined') return false;
+  return ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
+}
+
+function shouldSkipEventPersistence(eventName: EventName, pagePath: string): boolean {
+  if (pagePath.startsWith('/dev')) {
+    return true;
+  }
+
+  const localAnalyticsEnabled = import.meta.env.VITE_ENABLE_LOCAL_ANALYTICS === '1';
+  if (!localAnalyticsEnabled && isLocalRuntime() && HIGH_VOLUME_LOCAL_EVENTS.has(eventName)) {
+    return true;
+  }
+
+  return false;
+}
 
 async function getAnalyticsHeaders(): Promise<Record<string, string>> {
   const headers: Record<string, string> = { 'Content-Type': 'application/json' };
@@ -107,6 +132,10 @@ export function trackEvent(
   page?: string
 ): void {
   const pagePath = page || window.location.pathname;
+  if (shouldSkipEventPersistence(eventName, pagePath)) {
+    return;
+  }
+
   const dedupeSignature = buildDedupeSignature(eventName, eventData, pagePath);
   const now = Date.now();
 
