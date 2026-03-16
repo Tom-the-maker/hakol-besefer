@@ -58,3 +58,50 @@ export function parseJsonBody(req) {
   return { ok: false, body: {} };
 }
 
+function normalizeHostname(value) {
+  if (typeof value !== 'string') {
+    return '';
+  }
+
+  return value
+    .trim()
+    .replace(/^\[|\]$/g, '')
+    .split(':')[0]
+    .toLowerCase();
+}
+
+function extractHeaderHostname(value) {
+  if (typeof value !== 'string' || !value.trim()) {
+    return '';
+  }
+
+  try {
+    return normalizeHostname(new URL(value).hostname);
+  } catch {
+    return normalizeHostname(value.split(',')[0] || '');
+  }
+}
+
+function isLocalHostname(hostname) {
+  return ['localhost', '127.0.0.1', '::1'].includes(hostname);
+}
+
+export function isLocalRequest(req) {
+  const directHost = normalizeHostname(req.headers?.host || '');
+  if (isLocalHostname(directHost)) {
+    return true;
+  }
+
+  const forwardedHost = extractHeaderHostname(req.headers?.['x-forwarded-host'] || '');
+  if (isLocalHostname(forwardedHost)) {
+    return true;
+  }
+
+  const originHost = extractHeaderHostname(req.headers?.origin || '');
+  if (isLocalHostname(originHost)) {
+    return true;
+  }
+
+  const refererHost = extractHeaderHostname(req.headers?.referer || '');
+  return isLocalHostname(refererHost);
+}

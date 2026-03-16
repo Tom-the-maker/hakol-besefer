@@ -38,6 +38,10 @@ export function getDashboardApiKey() {
   return getEnv('DASHBOARD_API_KEY');
 }
 
+export function isLocalAnalyticsEnabled() {
+  return getEnv('ENABLE_LOCAL_ANALYTICS') === '1' || getEnv('VITE_ENABLE_LOCAL_ANALYTICS') === '1';
+}
+
 export function getServerConfiguration() {
   return {
     appEnv: getAppEnv(),
@@ -52,4 +56,3 @@ export function getServerConfiguration() {
     },
   };
 }
-

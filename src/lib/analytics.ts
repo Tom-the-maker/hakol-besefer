@@ -37,14 +37,6 @@ const NON_DEDUPED_EVENTS = new Set<EventName>([
 ]);
 
 const WINDOW_SCROLL_MILESTONES = [10, 25, 50, 75, 90, 100];
-const HIGH_VOLUME_LOCAL_EVENTS = new Set<EventName>([
-  'ui_click',
-  'ui_scroll',
-  'ui_input',
-  'chat_input',
-  'chat_parse',
-]);
-
 const deviceType = (): string => window.innerWidth < 768 ? 'mobile' : 'desktop';
 
 let lastEvent = { signature: '', time: 0 };
@@ -61,7 +53,7 @@ function shouldSkipEventPersistence(eventName: EventName, pagePath: string): boo
   }
 
   const localAnalyticsEnabled = import.meta.env.VITE_ENABLE_LOCAL_ANALYTICS === '1';
-  if (!localAnalyticsEnabled && isLocalRuntime() && HIGH_VOLUME_LOCAL_EVENTS.has(eventName)) {
+  if (!localAnalyticsEnabled && isLocalRuntime()) {
     return true;
   }
 

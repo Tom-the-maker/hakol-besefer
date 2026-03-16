@@ -1,6 +1,7 @@
+import { isLocalAnalyticsEnabled } from '../lib/env.js';
 import { getAuthUser } from '../lib/auth.js';
 import { getSupabaseAdmin } from '../lib/supabase.js';
-import { parseJsonBody, sendError, sendJson, setCors } from '../lib/http.js';
+import { isLocalRequest, parseJsonBody, sendError, sendJson, setCors } from '../lib/http.js';
 
 function getString(value) {
   return typeof value === 'string' ? value.trim() : '';
@@ -42,6 +43,10 @@ export default async function handler(req, res) {
 
   if (page.startsWith('/dev')) {
     return sendJson(res, 200, { success: true, skipped: 'dev-page' });
+  }
+
+  if (isLocalRequest(req) && !isLocalAnalyticsEnabled()) {
+    return sendJson(res, 200, { success: true, skipped: 'local-runtime' });
   }
 
   const authUser = await getAuthUser(req, supabase);

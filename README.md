@@ -25,7 +25,15 @@
 npm install
 npm run check
 npm run dev
+npm run telemetry:report
 ```
+
+## בקרת שימוש
+
+- כברירת מחדל, `localhost` לא כותב `analytics_events` לסופבייס. אם צריך בדיקת טלמטריה מכוונת, מדליקים רק זמנית עם `VITE_ENABLE_LOCAL_ANALYTICS=1`.
+- `npm run telemetry:report` מציג ספירות של `books`, `system_logs`, `analytics_events`, וגם מצב `Storage` בשני ה־buckets.
+- מאחר ש־`lab` ו־`prod` יושבים על אותו ארגון בסופבייס, צריך לעקוב אחרי usage ברמת הארגון, לא רק ברמת הפרויקט.
+- כדי לראות זאת בדשבורד של סופבייס: נכנסים לארגון, ואז `Usage`. כדי לראות מה יושב בכל פרויקט, נכנסים לפרויקט עצמו ואז ל־`Storage`.
 
 ## מסמכים בריפו
 
@@ -36,4 +44,3 @@ npm run dev
 ## עצירה מודעת
 
 הריפו הזה הוכן כך שאפשר להמשיך מקומית בלי חשבון חדש. יצירת GitHub remote חדש, פתיחת פרויקטי Supabase חדשים, וקישור CLI לפרויקטים החדשים ייעשו רק אחרי פתיחת החשבונות החדשים.
-
