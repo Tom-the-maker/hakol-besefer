@@ -8,7 +8,7 @@ export const siteConfig = {
   // Site
   siteName: 'סוףסיפור',
   // Prefer explicit env; fallback to current origin so auth redirect works on preview/staging.
-  siteUrl: envSiteUrl || runtimeSiteUrl || 'https://sofsipur.vercel.app',
+  siteUrl: envSiteUrl || runtimeSiteUrl || 'https://hakol-besefer.vercel.app',
   
   // Contact
   supportEmail: 'support@sofsipur.co.il', // Update to real email

@@ -60,7 +60,7 @@ const ASSET_CACHE_SECONDS = '31536000';
 const MAX_OWNED_BOOKS = 500;
 
 // ---- Access Token Management (localStorage) ----
-const OWNED_BOOKS_KEY = 'sofsipur_owned_books';
+const OWNED_BOOKS_KEY = 'hakol_besefer_owned_books';
 
 type OwnedBookEntry = { token: string; savedAt: number };
 
@@ -542,7 +542,7 @@ export async function uploadBookPdf(
 ): Promise<UploadedAsset | null> {
   if (!supabase || !slug || !pdfBlob) return null;
 
-  const safeFileName = sanitizeFileName(fileName || `sofsipur-story-${Date.now()}.pdf`);
+  const safeFileName = sanitizeFileName(fileName || `hakol-besefer-story-${Date.now()}.pdf`);
   const filePath = `${slug}/pdf/${Date.now()}-${safeFileName}`;
 
   try {

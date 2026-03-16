@@ -209,7 +209,7 @@ const MobileBookView: React.FC<MobileBookViewProps> = ({ story, onUnlock, onRequ
             const url = canvas.toDataURL('image/png');
             const link = document.createElement('a');
             link.href = url;
-            link.download = `sofsipur-page-${currentIndex + 1}-${Date.now()}.png`;
+            link.download = `hakol-besefer-page-${currentIndex + 1}-${Date.now()}.png`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -230,7 +230,7 @@ const MobileBookView: React.FC<MobileBookViewProps> = ({ story, onUnlock, onRequ
             // Create PDF based on capture dimensions
             const pdf = new jsPDF({ orientation: 'portrait', unit: 'px', format: [canvas.width, canvas.height] });
             pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
-            const fileName = `sofsipur-page-${currentIndex}-${Date.now()}.pdf`;
+            const fileName = `hakol-besefer-page-${currentIndex}-${Date.now()}.pdf`;
 
             pdf.save(fileName);
             trackEvent('pdf_downloaded', { source: 'mobile' });
