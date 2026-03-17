@@ -19,7 +19,7 @@ const Logo = ({ className = "", onClick, textClassName = "", imageClassName = ""
     >
       <img
         src={src}
-        alt="סוףסיפור"
+        alt="הכל בספר"
         className={`w-auto h-auto object-contain shrink-0 ${textClassName} ${logoSizeClass}`}
       />
     </div>

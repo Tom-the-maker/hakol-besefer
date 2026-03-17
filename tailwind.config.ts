@@ -52,7 +52,7 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// סוףסיפור Global Design Tokens
+				// הכל בספר Global Design Tokens
 				brandYellow: '#FFC72C',
 				textPrimary: '#1A1A1A',
 				textSecondary: '#555555',

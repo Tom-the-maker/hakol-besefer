@@ -154,11 +154,11 @@ const Navbar = ({ onStartCoCreation, onLogoClick, onMyBooks, onLoginClick }: Nav
           type="button"
           onClick={handleLogoClick}
           className="inline-flex items-center"
-          aria-label="סוףסיפור"
+          aria-label="הכל בספר"
         >
           <img
             src="/logo/Logo_Wide.png"
-            alt="סוףסיפור"
+            alt="הכל בספר"
             className="h-[19px] w-auto object-contain block shrink-0"
           />
         </button>

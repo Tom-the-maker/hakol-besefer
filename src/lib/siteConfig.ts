@@ -6,14 +6,14 @@ const runtimeSiteUrl = typeof window !== 'undefined' ? window.location.origin : 
 
 export const siteConfig = {
   // Site
-  siteName: 'סוףסיפור',
+  siteName: 'הכל בספר',
   // Prefer explicit env; fallback to current origin so auth redirect works on preview/staging.
   siteUrl: envSiteUrl || runtimeSiteUrl || 'https://hakol-besefer.vercel.app',
   
   // Contact
-  supportEmail: 'support@sofsipur.co.il', // Update to real email
+  supportEmail: 'support@hakol-besefer.example', // Replace with the real business inbox before launch
   whatsappNumber: '972500000000', // Update to real number
-  whatsappMessage: 'שלום, יש לי שאלה לגבי סוףסיפור',
+  whatsappMessage: 'שלום, יש לי שאלה לגבי הכל בספר',
   
   // Social
   facebookUrl: '',

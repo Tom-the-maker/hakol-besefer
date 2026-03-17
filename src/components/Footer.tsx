@@ -67,7 +67,7 @@ const Footer = () => {
 
           {/* Copyright */}
           <div className="text-black font-normal order-1 md:order-2" style={{ color: '#000000' }}>
-            סוףסיפור © 2026
+            הכל בספר © 2026
           </div>
         </div>
 

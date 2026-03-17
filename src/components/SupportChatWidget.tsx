@@ -19,7 +19,7 @@ const quickPrompts = [
 const initialMessage: ChatMessage = {
   id: 'intro',
   role: 'assistant',
-  text: 'היי, אני העוזר של סוףסיפור. אפשר לשאול אותי על תהליך יצירה, מחירים, סגנונות, תשלום והדפסה.'
+  text: 'היי, אני העוזר של הכל בספר. אפשר לשאול אותי על תהליך יצירה, מחירים, סגנונות, תשלום והדפסה.'
 };
 
 function fallbackReply(message: string): string {
@@ -166,7 +166,7 @@ const SupportChatWidget: React.FC<{ forceOpen?: boolean }> = ({ forceOpen = fals
           <div className="border-b border-gray-200 bg-[#F4F5F7] px-4 py-3">
             <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-sm font-black text-black" style={{ color: '#000000' }}>עוזר סוףסיפור</p>
+                <p className="text-sm font-black text-black" style={{ color: '#000000' }}>עוזר הכל בספר</p>
                 <p className="text-xs font-normal text-black">זמין לענות בכל שלב</p>
               </div>
               <button

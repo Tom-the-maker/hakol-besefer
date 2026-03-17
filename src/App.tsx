@@ -26,7 +26,7 @@ import { AuthProvider } from './lib/auth';
 import AuthModal from './components/AuthModal';
 import { CookieConsent } from './components/CookieConsent';
 
-// Import design system components from sofsipur-story-craft
+// Reuse the established design system shell while rebuilding the product foundation.
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import FeatureStrip from './components/FeatureStrip'; // Import FeatureStrip

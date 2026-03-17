@@ -3192,7 +3192,7 @@ const DevDashboard: React.FC = () => {
                 <div className="flex h-[76px] items-center px-5 border-b border-[rgba(255,255,255,0.08)] text-white">
                     <div>
                         <p className="text-[13px] font-semibold tracking-[0.22em] text-[#8eb7ff] uppercase">Lab Console</p>
-                        <p className="text-[22px] font-black truncate leading-none">SofSipur Dev</p>
+                        <p className="text-[22px] font-black truncate leading-none">Hakol BeSefer Dev</p>
                     </div>
                 </div>
                 <div className="px-5 pt-4 pb-2">
