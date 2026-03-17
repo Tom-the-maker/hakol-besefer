@@ -1,4 +1,4 @@
-import { isLocalAnalyticsEnabled } from '../lib/env.js';
+import { isLocalAnalyticsEnabled, isVerboseAnalyticsEnabled } from '../lib/env.js';
 import { getAuthUser } from '../lib/auth.js';
 import { getSupabaseAdmin } from '../lib/supabase.js';
 import { isLocalRequest, parseJsonBody, sendError, sendJson, setCors } from '../lib/http.js';
@@ -12,6 +12,14 @@ function normalizeObject(value) {
     ? value
     : {};
 }
+
+const HIGH_VOLUME_EVENT_NAMES = new Set([
+  'ui_click',
+  'ui_scroll',
+  'ui_input',
+  'chat_input',
+  'chat_parse',
+]);
 
 export default async function handler(req, res) {
   setCors(res, 'POST, OPTIONS');
@@ -47,6 +55,10 @@ export default async function handler(req, res) {
 
   if (isLocalRequest(req) && !isLocalAnalyticsEnabled()) {
     return sendJson(res, 200, { success: true, skipped: 'local-runtime' });
+  }
+
+  if (HIGH_VOLUME_EVENT_NAMES.has(eventName) && !isVerboseAnalyticsEnabled()) {
+    return sendJson(res, 200, { success: true, skipped: 'verbose-analytics-disabled' });
   }
 
   const authUser = await getAuthUser(req, supabase);

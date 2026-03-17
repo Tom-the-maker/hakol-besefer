@@ -36,6 +36,14 @@ const NON_DEDUPED_EVENTS = new Set<EventName>([
   'chat_parse',
 ]);
 
+const HIGH_VOLUME_EVENTS = new Set<EventName>([
+  'ui_click',
+  'ui_scroll',
+  'ui_input',
+  'chat_input',
+  'chat_parse',
+]);
+
 const WINDOW_SCROLL_MILESTONES = [10, 25, 50, 75, 90, 100];
 const deviceType = (): string => window.innerWidth < 768 ? 'mobile' : 'desktop';
 
@@ -47,6 +55,10 @@ function isLocalRuntime(): boolean {
   return ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
 }
 
+function isVerboseAnalyticsEnabled(): boolean {
+  return import.meta.env.VITE_ENABLE_VERBOSE_ANALYTICS === '1';
+}
+
 function shouldSkipEventPersistence(eventName: EventName, pagePath: string): boolean {
   if (pagePath.startsWith('/dev')) {
     return true;
@@ -54,6 +66,10 @@ function shouldSkipEventPersistence(eventName: EventName, pagePath: string): boo
 
   const localAnalyticsEnabled = import.meta.env.VITE_ENABLE_LOCAL_ANALYTICS === '1';
   if (!localAnalyticsEnabled && isLocalRuntime()) {
+    return true;
+  }
+
+  if (HIGH_VOLUME_EVENTS.has(eventName) && !isVerboseAnalyticsEnabled()) {
     return true;
   }
 
@@ -221,6 +237,10 @@ function registerScrollMilestone(
 // Captures granular UI events (click / input / scroll milestones) for journey diagnostics.
 export function initUiJourneyTelemetry(): () => void {
   if (typeof window === 'undefined' || typeof document === 'undefined') {
+    return () => {};
+  }
+
+  if (!isVerboseAnalyticsEnabled()) {
     return () => {};
   }
 

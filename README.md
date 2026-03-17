@@ -25,6 +25,8 @@
 npm install
 npm run check
 npm run dev
+npm run smoke:auth
+npm run smoke:payment
 npm run telemetry:report
 npm run lab:reset
 ```
@@ -32,6 +34,7 @@ npm run lab:reset
 ## בקרת שימוש
 
 - כברירת מחדל, `localhost` לא כותב `analytics_events` לסופבייס. אם צריך בדיקת טלמטריה מכוונת, מדליקים רק זמנית עם `VITE_ENABLE_LOCAL_ANALYTICS=1`.
+- אירועי `ui_click / ui_scroll / ui_input / chat_input / chat_parse` כבויים כברירת מחדל גם מחוץ ל־`localhost`. אם באמת צריך אותם, מדליקים רק זמנית עם `VITE_ENABLE_VERBOSE_ANALYTICS=1`.
 - `npm run telemetry:report` מציג ספירות של `books`, `system_logs`, `analytics_events`, וגם מצב `Storage` בשני ה־buckets. הוא טוען אוטומטית את `.env.local`.
 - `npm run lab:reset` מיועד ל־`lab` בלבד. בלי `--apply` הוא מציג dry-run; עם `--apply` הוא מוחק ספרי בדיקה, לוגים, אנליטיקה ונכסי Storage מהמעבדה בלבד. גם הוא טוען אוטומטית את `.env.local`.
 - מאחר ש־`lab` ו־`prod` יושבים על אותו ארגון בסופבייס, צריך לעקוב אחרי usage ברמת הארגון, לא רק ברמת הפרויקט.
@@ -55,6 +58,8 @@ npm run lab:reset
 - `docs/ARCHITECTURE_HE.md`
 - `docs/ENVIRONMENTS_HE.md`
 - `docs/SUPABASE_SCHEMA_HE.md`
+- `docs/PAYMENT_INTEGRATION_DECISION_HE.md`
+- `docs/VERCEL_ENV_PLAN_HE.md`
 
 ## עצירה מודעת
 

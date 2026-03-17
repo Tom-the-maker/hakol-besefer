@@ -42,6 +42,10 @@ export function isLocalAnalyticsEnabled() {
   return getEnv('ENABLE_LOCAL_ANALYTICS') === '1' || getEnv('VITE_ENABLE_LOCAL_ANALYTICS') === '1';
 }
 
+export function isVerboseAnalyticsEnabled() {
+  return getEnv('ENABLE_VERBOSE_ANALYTICS') === '1' || getEnv('VITE_ENABLE_VERBOSE_ANALYTICS') === '1';
+}
+
 export function getServerConfiguration() {
   return {
     appEnv: getAppEnv(),
