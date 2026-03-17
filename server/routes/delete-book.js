@@ -2,6 +2,7 @@ import { getAuthUser } from '../lib/auth.js';
 import { getStorageBuckets, getSupabaseAdmin, listAllStoragePaths } from '../lib/supabase.js';
 import { hashAccessToken } from '../lib/crypto.js';
 import { parseJsonBody, sendError, sendJson, setCors } from '../lib/http.js';
+import { appendSystemLog } from '../lib/system-log.js';
 
 function getString(value) {
   return typeof value === 'string' ? value.trim() : '';
@@ -81,6 +82,18 @@ export default async function handler(req, res) {
     return sendError(res, 403, 'Not authorized to delete this book');
   }
 
+  await appendSystemLog(supabase, {
+    sessionId: book.session_id || `book:${book.slug}`,
+    userId: authUser?.id || book.user_id || null,
+    bookSlug: book.slug,
+    actionType: 'delete_book',
+    stage: 'book_delete_requested',
+    status: 'success',
+    metadata: {
+      deleted_by: authUser ? 'auth-user' : 'access-token',
+    },
+  });
+
   const { publicBucket, privateBucket } = getStorageBuckets();
 
   try {
@@ -104,23 +117,6 @@ export default async function handler(req, res) {
 
   if (deleteError) {
     return sendError(res, 500, 'Failed to delete book record', deleteError.message);
-  }
-
-  try {
-    await supabase
-      .from('analytics_events')
-      .insert({
-        session_id: book.session_id || 'system',
-        book_slug: book.slug,
-        event_name: 'book_deleted',
-        page: '/api/delete-book',
-        device_type: 'server',
-        event_data: {
-          deletedBy: authUser ? 'auth-user' : 'access-token',
-        },
-      });
-  } catch {
-    // Ignore analytics logging failures on deletion.
   }
 
   return sendJson(res, 200, {

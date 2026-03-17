@@ -9,6 +9,7 @@ import {
   isStoragePath,
 } from '../lib/supabase.js';
 import { parseJsonBody, sendError, sendJson, setCors } from '../lib/http.js';
+import { appendSystemLog } from '../lib/system-log.js';
 
 const CACHE_CONTROL_SECONDS = '31536000';
 const LEGACY_BOOK_SELECT = [
@@ -690,7 +691,7 @@ async function handleClaim(req, res, supabase, body) {
 
   const { data: book, error } = await supabase
     .from('books')
-    .select('id, slug, email, user_id, access_token_hash, metadata')
+    .select('id, slug, session_id, email, user_id, access_token_hash, metadata')
     .eq('slug', slug)
     .maybeSingle();
 
@@ -729,6 +730,20 @@ async function handleClaim(req, res, supabase, body) {
   if (updateError) {
     return sendError(res, 500, 'Failed to claim book', updateError.message);
   }
+
+  await appendSystemLog(supabase, {
+    sessionId: book.session_id || `ownership:${book.slug}`,
+    userId: authUser?.id || book.user_id || null,
+    bookSlug: book.slug,
+    actionType: 'book_claim',
+    stage: 'ownership_claimed',
+    status: 'success',
+    metadata: {
+      claim_method: authUser ? 'auth-or-token' : 'token-only',
+      has_email: Boolean(normalizedEmail || normalizeEmail(book.email)),
+      has_existing_user_id: Boolean(book.user_id),
+    },
+  });
 
   return sendJson(res, 200, {
     access_token: nextToken,
@@ -859,20 +874,38 @@ async function handleLinkByEmail(req, res, supabase) {
     return sendError(res, 401, 'Authenticated user required');
   }
 
-  const { error } = await supabase
+  const { data: linkedBooks, error } = await supabase
     .from('books')
     .update({
       user_id: authUser.id,
       updated_at: new Date().toISOString(),
     })
     .eq('email', normalizedAuthEmail)
-    .is('user_id', null);
+    .is('user_id', null)
+    .select('id, slug, session_id');
 
   if (error) {
     return sendError(res, 500, 'Failed to link books by email', error.message);
   }
 
-  return sendJson(res, 200, { success: true });
+  const linkedCount = Array.isArray(linkedBooks) ? linkedBooks.length : 0;
+  await appendSystemLog(supabase, {
+    sessionId: `ownership:${authUser.id}`,
+    userId: authUser.id,
+    actionType: 'link_books_by_email',
+    stage: 'ownership_linked_by_email',
+    status: 'success',
+    metadata: {
+      email: normalizedAuthEmail,
+      linked_count: linkedCount,
+      linked_slugs: linkedCount > 0 ? linkedBooks.slice(0, 20).map((book) => book.slug) : [],
+    },
+  });
+
+  return sendJson(res, 200, {
+    success: true,
+    linked_count: linkedCount,
+  });
 }
 
 async function handleRecordPdfArtifact(req, res, supabase, body) {
